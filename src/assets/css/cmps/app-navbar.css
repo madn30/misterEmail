@@ -1,0 +1,24 @@
+.nav-bar {
+}
+.nav-bar-top {
+  display: flex;
+  align-items: center;
+}
+
+.nav-bar-top svg {
+  font-size: 20px;
+  margin-right: 20px;
+}
+
+.nav-item {
+  height: 40px;
+  display: flex;
+  padding: 5px;
+  gap: 20px;
+  align-items: center;
+  text-align: center;
+  border-radius: 0px 10px 10px 0px;
+}
+.nav-item:hover {
+  background-color: rgba(32, 33, 36, 0.059);
+}

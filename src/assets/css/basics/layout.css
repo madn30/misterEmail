@@ -1,0 +1,26 @@
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding: 20px;
+}
+.nav-bar {
+  grid-area: navBar;
+}
+.content-container {
+  grid-area: siteContent;
+}
+/* GRIDS */
+.simple-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  grid-gap: 10px;
+}
+.main-layout-grid {
+  column-gap: 24px;
+  grid-template: min-content 1fr min-content / 12.25rem minmax(0, 1fr);
+  grid-template-columns: 15.5rem minmax(0, 1fr);
+  display: grid;
+  grid-template-areas: "navBar siteContent";
+}
