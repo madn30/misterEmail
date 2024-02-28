@@ -1,7 +1,9 @@
 .app-header {
-    background: #e91e63;
-    color: white;
-
+    display: grid;
+    column-gap: 24px;
+    padding: 8px;
+    grid-template-columns: subgrid;
+    grid-column: 1 / -1;
 }
 
 .app-header section.container {
@@ -9,7 +11,10 @@
     align-items: center;
 
 }
-
+.app-header > *  {
+    display: flex;
+    align-items: center;
+}
 .app-header h1.logo {
     flex-grow: 1;
     font-weight: 600;
@@ -25,4 +30,10 @@
 
 .app-header section.container>section {
     flex-grow: 1;
+}
+.app-header-right{
+    justify-content: space-between;
+}
+.app-header-right-actions{
+
 }

@@ -4,7 +4,7 @@ export default function NavItem(prop) {
   const { title, icon:Icon, ...rest } = prop;
   return (
     <div className="nav-item">
-      <Icon/>
+      <Icon />
       <a href="#">{title}</a>
     </div>
   );

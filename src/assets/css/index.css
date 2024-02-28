@@ -10,6 +10,8 @@
 /* Components */
 @import "./cmps/app-header.css";
 @import "./cmps/app-navbar.css";
+@import "./cmps/search.css";
+@import "./cmps/account.css";
 
 
 

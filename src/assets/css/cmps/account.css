@@ -1,0 +1,15 @@
+.account {
+    height: 35px;
+    border-radius: 50%;
+    background: #004d40;
+    width: 35px;
+    align-items: center;
+    display: flex;
+    text-align: center;
+    font-size: 1.1em;
+    color: white;
+    font-weight: 400;
+    align-items: center;
+    justify-content: center;
+    margin-left:12px;
+}

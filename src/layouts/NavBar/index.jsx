@@ -18,10 +18,10 @@ export default function NavBar() {
 
   return (
     <nav className="nav-bar">
-      <div className="nav-bar-top">
+      {/* <div className="nav-bar-top">
         <MainMenu />
         <Logo />
-      </div>
+      </div> */}
       {sections.map((section, index) => (
         <NavItem key={index} title={section.title} icon={section.icon} />
       ))}

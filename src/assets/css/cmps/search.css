@@ -1,0 +1,14 @@
+.search {
+  border: none;
+  padding: 0px;
+  margin: 0px;
+  height: auto;
+  width: 100%;
+  background: #ebf1fb;
+  z-index: 6;
+  left: 0px;
+  padding: 15px;
+  border-radius: 50px;
+  max-width:695px;
+  min-width: 300px;
+}

@@ -124,7 +124,6 @@
 .p20 {
     padding: 20px;
 }
-
 .m5 {
     margin: 5px;
 }
@@ -135,6 +134,9 @@
 
 .m20 {
     margin: 20px;
+}
+.mr12 {
+    margin-left : 12px
 }
 
 /* Normalize Background */
