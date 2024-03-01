@@ -14,6 +14,11 @@ export const routes = [
     layout: MainLayout,
     element: () => import("./pages/AboutUs/AboutUs"),
   },
+  {
+    path: "/email-detail/:id",
+    layout: MainLayout,
+    element: () => import("./pages/EmailDetails/EmailDetails"),
+  },
 ];
 
 export const createRouting = (routesArray) => (
