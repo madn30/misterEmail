@@ -32,6 +32,7 @@ export default function EmailPreview({ email, onRemoveMail }) {
       >
         <FaTrash />
       </div>
+      
       <div className="icon-container">
         <FaRegEdit />
       </div>
@@ -56,7 +57,7 @@ export default function EmailPreview({ email, onRemoveMail }) {
       </div>
       <h5>{email.subject}</h5>
       <div className="email-body-container">
-        <h5 >{email.body}</h5>
+        <h5>{email.body}</h5>
       </div>
       {!isHovered && <h5>{formattedTime}</h5>}
       {isHovered && <HoverIcons />}

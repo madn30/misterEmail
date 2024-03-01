@@ -3,8 +3,9 @@ import { MdOutlineInbox } from "react-icons/md";
 import { FaRegStar } from "react-icons/fa";
 import { RiDraftLine } from "react-icons/ri";
 import { VscSend } from "react-icons/vsc";
-import NavItem from "./NavItem"; 
-import Compose from "../../components/Compose/Compose";
+import NavItem from "./NavItem";
+import Compose from "../../../components/Compose/Compose";
+import ToolTip from "../../../components/ToolTip/ToolTip";
 
 export default function NavBar() {
   const sections = [
@@ -17,9 +18,11 @@ export default function NavBar() {
 
   return (
     <nav className="nav-bar">
-      <Compose/>
+      <Compose />
       {sections.map((section, index) => (
-        <NavItem key={index} title={section.title} icon={section.icon} />
+        <ToolTip position="right">
+          <NavItem key={index} title={section.title} icon={section.icon} />
+        </ToolTip>
       ))}
     </nav>
   );

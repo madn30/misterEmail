@@ -3,6 +3,7 @@ import Paper from "../../components/Paper/Paper";
 import { emailService } from "../../services/email.service";
 import EmailFilter from "../../components/EmailFilter/EmailFilter";
 import EmailList from "../../components/EmailList/EmailList";
+
 export default function EmailIndex() {
   const [emails, setEmails] = useState(null);
   const [filterBy, setFilterBy] = useState();
@@ -18,12 +19,10 @@ export default function EmailIndex() {
     loadEmails();
   }, []);
 
-  const onRemoveMail = async (event, idx) => {
-    event.stopPropagation();
+  const onRemoveMail = async (idx) => {
     try {
       const resp = await emailService.remove(idx);
       setEmails((prevEmails) => prevEmails.filter((mail) => mail.id !== idx));
-      // setEmails(emails);
     } catch (err) {
       console.error(err);
     }

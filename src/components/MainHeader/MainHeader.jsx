@@ -15,7 +15,7 @@ const iconComponents = {
   IoIosHelpCircleOutline: SupportIcon,
 };
 
-export default function TopBar() {
+export default function MainHeader() {
   return (
     <header className="app-header">
       <div className="app-header-left">

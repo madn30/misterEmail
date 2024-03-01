@@ -1,59 +1,78 @@
 import React, { useRef, useState, useEffect } from 'react';
 
-const ToolTip = ({ children, className = '', style = {}, isAbsolute = false }) => {
+const ToolTip = ({
+  children,
+  className = '',
+  position = 'bottom',
+  content = 'Default hehre',
+}) => {
   const targetRef = useRef(null);
+  const tooltipRef = useRef(null);
   const [isHovered, setIsHovered] = useState(false);
+  const [tooltipVisibility, setTooltipVisibility] = useState(false);
   const [tooltipStyle, setTooltipStyle] = useState({});
 
-  const updateTooltipPosition = () => {
-    if (!targetRef.current) return;
-    const targetRect = targetRef.current.getBoundingClientRect();
+  useEffect(() => {
+    const updateTooltipPosition = () => {
+      if (!targetRef.current || !tooltipRef.current || !tooltipVisibility) return;
 
-    let newStyle = { visibility: 'hidden', opacity: 0, position: 'fixed' };
+      const targetRect = targetRef.current.getBoundingClientRect();
+      const tooltipRect = tooltipRef.current.getBoundingClientRect();
+      const viewportWidth = window.innerWidth;
+      const offset = 4;
 
-    const availableSpace = {
-      bottom: window.innerHeight - targetRect.bottom,
-      top: targetRect.top,
-      left: targetRect.left,
-      right: window.innerWidth - targetRect.right
+      let newStyle = { opacity: 1, position: 'fixed', visibility: 'visible' };
+
+      let leftPosition = targetRect.left + (targetRect.width / 2) - (tooltipRect.width / 2);
+      leftPosition = Math.max(offset, Math.min(leftPosition, viewportWidth - tooltipRect.width - offset));
+      newStyle.left = `${leftPosition}px`;
+
+      switch (position) {
+        case 'bottom':
+          newStyle.top = `${targetRect.bottom + window.scrollY + offset}px`;
+          break;
+        case 'top':
+          newStyle.top = `${targetRect.top + window.scrollY - tooltipRect.height - offset}px`;
+          break;
+        case 'left':
+          newStyle.left = `${targetRect.left + window.scrollX - tooltipRect.width - offset}px`;
+          newStyle.top = `${targetRect.top + window.scrollY + (targetRect.height / 2) - (tooltipRect.height / 2)}px`;
+          break;
+        case 'right':
+          newStyle.left = `${targetRect.right + window.scrollX + offset}px`;
+          newStyle.top = `${targetRect.top + window.scrollY + (targetRect.height / 2) - (tooltipRect.height / 2)}px`;
+          break;
+        default:
+          newStyle.top = `${targetRect.bottom + window.scrollY + offset}px`;
+          break;
+      }
+
+      setTooltipStyle(newStyle);
     };
 
-    if (availableSpace.bottom > 50) { 
-      newStyle.top = `${targetRect.bottom + window.scrollY + 10}px`; 
-      newStyle.left = `${targetRect.left + window.scrollX}px`; 
-    } else if (availableSpace.top > 50) {
-      newStyle.bottom = `${window.innerHeight - targetRect.top + window.scrollY + 10}px`; 
-      newStyle.left = `${targetRect.left + window.scrollX}px`; 
-    } else {
-      newStyle.top = `${targetRect.bottom + window.scrollY + 10}px`; 
-      newStyle.left = availableSpace.left > availableSpace.right ? `${targetRect.right + window.scrollX}px` : `${targetRect.left + window.scrollX - 100}px`; 
+    if (tooltipVisibility) {
+      updateTooltipPosition();
     }
 
-    setTooltipStyle({ ...newStyle, visibility: 'visible', opacity: 1 });
-  };
-
-  useEffect(() => {
-    window.addEventListener('resize', updateTooltipPosition);
-    return () => {
-      window.removeEventListener('resize', updateTooltipPosition);
-    };
-  }, []);
+  }, [position, content, tooltipVisibility]);
 
   return (
     <div
       className={`tooltip-container ${className} ${isHovered ? 'show-tooltip' : ''}`}
-      style={{ position: isAbsolute ? 'absolute' : 'relative', ...style }}
       ref={targetRef}
       onMouseEnter={() => {
         setIsHovered(true);
-        updateTooltipPosition();
+        setTooltipVisibility(true); 
       }}
-      onMouseLeave={() => setIsHovered(false)}
+      onMouseLeave={() => {
+        setIsHovered(false);
+        setTooltipVisibility(false); 
+      }}
     >
       {children}
       {isHovered && (
-        <div className="tooltip-content" style={tooltipStyle}>
-          Tooltip Content
+        <div className="tooltip-content" ref={tooltipRef} style={tooltipStyle}>
+          {content}
         </div>
       )}
     </div>
