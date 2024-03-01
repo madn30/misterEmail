@@ -1,0 +1,19 @@
+.tooltip-container {
+    display: inline-block;
+    position: relative;
+  }
+  
+  .tooltip-content {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #f9f9f9;
+    color: #333;
+    padding: 8px 12px;
+    border-radius: 4px;
+    box-shadow: 0 1px 5px rgba(0,0,0,0.2);
+    z-index: 100;
+    transition: opacity 0.3s, visibility 0.3s;
+    /* maxWidth and whiteSpace are dynamically adjusted */
+  }
+  

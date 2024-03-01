@@ -1,0 +1,28 @@
+.smart-typography {
+  /* width: 100px; */
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.smart-typography-tooltip {
+  display: none;
+  position: absolute;
+  left: 0;
+  transform: translateY(-100%);
+  background-color: black;
+  color: white;
+  padding: 5px;
+  border-radius: 4px;
+  white-space: normal;
+  z-index: 1002;
+  width: max-content;
+  max-width: 300px;
+  top: 50%;
+  background: transparent;
+  color: black;
+  font-size: 0.8rem;
+}
+
+.smart-typography.hovered .smart-typography-tooltip {
+  display: block;
+}
