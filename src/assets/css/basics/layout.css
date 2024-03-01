@@ -1,5 +1,4 @@
 .container {
-
 }
 .nav-bar {
   grid-area: navBar;
@@ -19,7 +18,25 @@
   grid-template: min-content 1fr min-content / 12.25rem minmax(0, 1fr);
   grid-template-columns: 15.5rem minmax(0, 1fr);
   display: grid;
-  grid-template-areas: 
-  "header header"
-  "navBar siteContent";
+  grid-template-areas:
+    "header header"
+    "navBar siteContent";
+}
+.table-grid {
+  display: grid;
+  grid-template-columns: repeat(1, auto);
+}
+.table-grid-row {
+    grid-template-columns: minmax(auto, 1fr) minmax(200px, auto) minmax(auto, 1fr) minmax(6rem, 10em);
+    display: grid;
+    align-items: center;
+    padding-bottom: 10px;
+    padding-top: 10px;
+    gap: 20px;
+}
+.table-grid-row input{
+  margin: 0 10px 0 13px;
+}
+.table-grid-row svg {
+  margin: 0 10px 0 0;
 }
