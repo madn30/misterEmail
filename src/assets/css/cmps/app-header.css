@@ -1,39 +1,50 @@
 .app-header {
-    display: grid;
-    column-gap: 24px;
-    padding: 8px;
-    grid-template-columns: subgrid;
-    grid-column: 1 / -1;
+  display: grid;
+  column-gap: 24px;
+  padding: 8px;
+  grid-template-columns: subgrid;
+  grid-column: 1 / -1;
 }
 
 .app-header section.container {
-    display: flex;
-    align-items: center;
-
+  display: flex;
+  align-items: center;
 }
-.app-header > *  {
-    display: flex;
-    align-items: center;
+.app-header > * {
+  display: flex;
+  align-items: center;
 }
 .app-header h1.logo {
-    flex-grow: 1;
-    font-weight: 600;
+  flex-grow: 1;
+  font-weight: 600;
 }
 
 .app-header .back {
-    flex-grow: 1;
+  flex-grow: 1;
 }
 
 .app-header nav a:not(:last-child) {
-    margin-right: 10px;
+  margin-right: 10px;
 }
 
-.app-header section.container>section {
-    flex-grow: 1;
+.app-header section.container > section {
+  flex-grow: 1;
 }
-.app-header-right{
-    justify-content: space-between;
+.app-header-right {
+  justify-content: space-between;
 }
-.app-header-right-actions{
-
+.app-header svg {
+  -webkit-border-radius: 50%;
+  border-radius: 50%;
+  margin: 12px;
+  overflow: hidden;
+  vertical-align: middle;
+  cursor: pointer;
+  height: 24px;
+  width: 24px;
+  -webkit-flex: 0 0 auto;
+  -webkit-box-flex: 0;
+  -webkit-box-flex: 0 0 auto;
+  -webkit-flex: 0 0 auto;
+  flex: 0 0 auto;
 }

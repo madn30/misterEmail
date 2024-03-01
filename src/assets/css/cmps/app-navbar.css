@@ -1,18 +1,9 @@
 
-.nav-bar-top {
-  display: flex;
-  align-items: center;
-}
-
-.nav-bar-top svg {
-  font-size: 20px;
-  margin-right: 20px;
-}
 
 .nav-item {
+  padding-left: 20px;
   height: 40px;
   display: flex;
-  padding: 5px;
   gap: 20px;
   align-items: center;
   text-align: center;
@@ -23,4 +14,16 @@
 }
 .nav-item:active {
   background-color: #d3e3fd;
+}
+.nav-bar-compose-root {
+    padding-left: 6px;
+    margin-bottom: 10px;
+    display: flex;
+}
+.nav-bar-compose-root button {
+  background-color: #c3e7fe;
+  padding: 20px;
+  border-radius: 15px;
+  font-size: 0.9rem;
+  font-weight: 600;
 }

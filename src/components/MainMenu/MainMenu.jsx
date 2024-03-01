@@ -1,6 +1,6 @@
 import React from "react";
-import { LuMenu } from "react-icons/lu";
+import { LuMenu as MenuIcon } from "react-icons/lu";
 
 export default function MainMenu() {
-  return <LuMenu className="icon-svg"/>;
+  return <MenuIcon className="icon-svg"/>;
 }
