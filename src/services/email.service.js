@@ -1,33 +1,33 @@
 import { storageService } from "./async-storage.service.js";
 import { utilService } from "./util.service.js";
 
-export const robotService = {
+export const emailService = {
   query,
   save,
   remove,
   getById,
-  createRobot,
+  createEmail,
 };
 
 const STORAGE_KEY = "emails";
 
-_createRobots();
+_createEmails();
 
 async function query(filterBy) {
-  const robots = await storageService.query(STORAGE_KEY);
+  const emails = await storageService.query(STORAGE_KEY);
   if (filterBy) {
     var { type, maxBatteryStatus, minBatteryStatus, model } = filterBy;
     maxBatteryStatus = maxBatteryStatus || Infinity;
     minBatteryStatus = minBatteryStatus || 0;
-    robots = robots.filter(
-      (robot) =>
-        robot.type.toLowerCase().includes(type.toLowerCase()) &&
-        robot.model.toLowerCase().includes(model.toLowerCase()) &&
-        robot.batteryStatus < maxBatteryStatus &&
-        robot.batteryStatus > minBatteryStatus
+    emails = emails.filter(
+      (email) =>
+        email.type.toLowerCase().includes(type.toLowerCase()) &&
+        email.model.toLowerCase().includes(model.toLowerCase()) &&
+        email.batteryStatus < maxBatteryStatus &&
+        email.batteryStatus > minBatteryStatus
     );
   }
-  return robots;
+  return emails;
 }
 
 function getById(id) {
@@ -38,16 +38,16 @@ function remove(id) {
   return storageService.remove(STORAGE_KEY, id);
 }
 
-function save(robotToSave) {
-  if (robotToSave.id) {
-    return storageService.put(STORAGE_KEY, robotToSave);
+function save(emailToSave) {
+  if (emailToSave.id) {
+    return storageService.put(STORAGE_KEY, emailToSave);
   } else {
-    robotToSave.isOn = false;
-    return storageService.post(STORAGE_KEY, robotToSave);
+    emailToSave.isOn = false;
+    return storageService.post(STORAGE_KEY, emailToSave);
   }
 }
 
-function createRobot(model = "", type = "", batteryStatus = 100) {
+function createEmail(model = "", type = "", batteryStatus = 100) {
   return {
     model,
     batteryStatus,
@@ -55,9 +55,9 @@ function createRobot(model = "", type = "", batteryStatus = 100) {
   };
 }
 
-function _createRobots() {
-  let robots = utilService.loadFromStorage(STORAGE_KEY);
-  if (!robots || !robots.length) {
+function _createEmails() {
+  let emails = utilService.loadFromStorage(STORAGE_KEY);
+  if (!emails || !emails.length) {
     emails = [
       {
         id: "e101",
@@ -70,7 +70,7 @@ function _createRobots() {
         to: "user@appsus.com",
       },
       {
-        id: "e101",
+        id: "e102",
         subject: "Miss you!",
         body: "Would love to catch up sometimes",
         isRead: false,
@@ -80,7 +80,7 @@ function _createRobots() {
         to: "user@appsus.com",
       },
       {
-        id: "e101",
+        id: "e103",
         subject: "Miss you!",
         body: "Would love to catch up sometimes",
         isRead: false,
@@ -90,6 +90,6 @@ function _createRobots() {
         to: "user@appsus.com",
       },
     ];
-    utilService.saveToStorage(STORAGE_KEY, robots);
+    utilService.saveToStorage(STORAGE_KEY, emails);
   }
 }

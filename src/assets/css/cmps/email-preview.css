@@ -1,0 +1,28 @@
+.emails-list-root {
+  display: flex;
+  flex-direction: column;
+}
+.email-preview h5.body-text {
+  max-width: 600px; /* Adjust based on your layout */
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.email-preview {
+  align-items: center;
+  border-bottom: 1px solid rgba(100, 121, 143, 0.122);
+  /* justify-content: space-between; */
+  /* display: flex; */
+  padding: 10px;
+}
+.email-preview:hover {
+  box-shadow: inset 1px 0 0 #dadce0, inset -1px 0 0 #dadce0,
+    0 1px 2px 0 rgba(60, 64, 67, 0.3), 0 1px 3px 1px rgba(60, 64, 67, 0.15);
+  position: relative;
+  cursor: pointer;
+}
+.hover-icons {
+  display: flex;
+  gap: 10px;
+}
+
