@@ -1,0 +1,30 @@
+.email-details-root {
+}
+.email-details-root h2 {
+  padding: 20px 0 8px 72px;
+}
+.email-details-root .account {
+  -webkit-align-items: center;
+  align-items: center;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  float: none;
+  /* height: 80px; */
+  margin: 0 16px;
+  min-width: 40px;
+}
+.email-details {
+  display: flex;
+}
+.email-details-content {
+  display: flex;
+  flex-direction: column;
+}
+.email-body {
+    max-width: 600px;
+    margin: 0 auto;
+    width: 546px;
+    vertical-align: top;
+    padding-top: 32px;
+}
