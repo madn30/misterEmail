@@ -3,7 +3,7 @@
   flex-direction: column;
 }
 .email-preview h5.body-text {
-  max-width: 600px; /* Adjust based on your layout */
+  max-width: 600px;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -11,8 +11,6 @@
 .email-preview {
   align-items: center;
   border-bottom: 1px solid rgba(100, 121, 143, 0.122);
-  /* justify-content: space-between; */
-  /* display: flex; */
   padding: 10px;
 }
 .email-preview:hover {
@@ -26,3 +24,27 @@
   gap: 10px;
 }
 
+.email-preview {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.email-preview-time {
+  transition: opacity 0.3s ease;
+}
+
+.actions-icons {
+  display: none;
+  position: absolute;
+  right: 10px;
+}
+
+.email-preview:hover .email-preview-time {
+  opacity: 0;
+}
+
+.email-preview:hover .actions-icons {
+  display: flex; 
+}

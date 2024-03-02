@@ -1,42 +1,46 @@
 import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+
 import Paper from "../../components/Paper/Paper";
 import { emailService } from "../../services/email.service";
-import { useParams } from "react-router-dom";
-import EmailFilter from "../../components/EmailFilter/EmailFilter";
-// import Account from "../../components/Account/Account";
+import Avatar from "../../components/Avatar/Avatar";
+import { userService } from "../../services/user.service";
+
 export default function EmailDetails() {
   const [email, setEmail] = useState(null);
-  const query = useParams();
+  const {fullname} = JSON.parse(localStorage.getItem("user")) || "";
+  const { id } = useParams();
+
   useEffect(() => {
-    const loadEmails = async () => {
+    const loadEmail = async () => {
       try {
-        const emails = await emailService.getById(query.id);
-        setEmail(emails);
+        const emailData = await emailService.getById(id);
+        setEmail(emailData);
       } catch (err) {
-        console.error(err);
+        console.error("Failed to load email:", err);
       }
     };
-    loadEmails();
-  }, [query]);
-  if (!email) return <div>loading...</div>;
+    if (id) loadEmail();
+  }, [id]);
+
+  if (!email) {
+    return <div>Loading...</div>;
+  }
 
   return (
-    <Paper className="email-details-root">
-      {/* <EmailFilter /> */}
-      <h2>{email.subject}</h2>
-      <div className="email-details">
-        {/* <Account /> */}
-        <div className="full-width email-details-content">
-          <div className="flex column">
-            <span>Slack {"<notification@slack.com>"}</span>
-            <span>to me</span>
-          </div>
-          <div className="email-body">
-            <span>{email.body}</span>
-            <div style={{ height: 300 }}></div>
-          </div>
+    <Paper className="email-details-root email-preview-grid">
+      <header className="subject">{email.subject}</header>
+      <Avatar name={fullname} className="avatar" />
+      <section className="full-width email-details-content">
+        <div className="flex column">
+          <span>{email.to}</span>
+          <p>to me</p>
         </div>
-      </div>
+        <div className="email-body">
+          <p>{email.body}</p>
+          <div style={{ height: 300 }}></div>
+        </div>
+      </section>
     </Paper>
   );
 }

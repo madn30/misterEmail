@@ -7,6 +7,7 @@ export const emailService = {
   remove,
   getById,
   createEmail,
+  getDefaultFilter,
 };
 
 const STORAGE_KEY = "emails";
@@ -14,18 +15,23 @@ const STORAGE_KEY = "emails";
 _createEmails();
 
 async function query(filterBy) {
-  const emails = await storageService.query(STORAGE_KEY);
+  let emails = await storageService.query(STORAGE_KEY);
   if (filterBy) {
-    var { type, maxBatteryStatus, minBatteryStatus, model } = filterBy;
-    maxBatteryStatus = maxBatteryStatus || Infinity;
-    minBatteryStatus = minBatteryStatus || 0;
-    emails = emails.filter(
-      (email) =>
-        email.type.toLowerCase().includes(type.toLowerCase()) &&
-        email.model.toLowerCase().includes(model.toLowerCase()) &&
-        email.batteryStatus < maxBatteryStatus &&
-        email.batteryStatus > minBatteryStatus
-    );
+    const { search = "", status } = filterBy;
+
+    if (search) {
+      emails = emails.filter(email => 
+        email.subject.toLowerCase().includes(search.toLowerCase()) || 
+        email.body.toLowerCase().includes(search.toLowerCase()) || 
+        email.to.toLowerCase().includes(search.toLowerCase())
+      );
+    }
+
+    if (status && status !== 'all') {
+      const isRead = status === "read";
+      emails = emails.filter(email => email.isRead === isRead);
+    }
+
   }
   return emails;
 }
@@ -46,12 +52,15 @@ function save(emailToSave) {
     return storageService.post(STORAGE_KEY, emailToSave);
   }
 }
-
-function createEmail(model = "", type = "", batteryStatus = 100) {
+function getDefaultFilter() {
   return {
-    model,
-    batteryStatus,
-    type,
+    search: "",
+    status: "all",
+  };
+}
+function createEmail() {
+  return {
+
   };
 }
 
