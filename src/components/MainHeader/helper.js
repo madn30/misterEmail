@@ -1,4 +1,3 @@
-// Adjust or ensure this is your helper file content
 export const headerIcons = [
   {
     title: "Support",
@@ -12,5 +11,4 @@ export const headerIcons = [
     title: "Google apps",
     icon: "CgMenuGridO",
   },
-  // Add more as needed
 ];
