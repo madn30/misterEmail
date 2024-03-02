@@ -1,4 +1,12 @@
-const STORAGE_KEY = "emails";
+import { storageService } from "./async-storage.service";
+import { utilService } from "./util.service";
+
+const STORAGE_KEY = "user";
+
+export const userService = {
+  query,
+  getFirstLetterAccount,
+};
 
 _createAccount();
 
@@ -6,7 +14,10 @@ async function query() {
   const user = await storageService.query(STORAGE_KEY);
   return user;
 }
+async function getFirstLetterAccount() {
 
+  
+}
 function _createAccount() {
   let user = utilService.loadFromStorage(STORAGE_KEY);
   if (!user) {

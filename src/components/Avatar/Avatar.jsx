@@ -1,7 +1,11 @@
-import React from 'react'
+import React from "react";
 
-export default function Avatar() {
+export default function Avatar({ name, className }) {
+  const avatarInitial = name ? name.charAt(0) : "?";
+
   return (
-    <div>Avatar</div>
-  )
+    <div className={`${className} avatar-root`}>
+      <h4>{avatarInitial}</h4>
+    </div>
+  );
 }

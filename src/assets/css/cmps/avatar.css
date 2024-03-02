@@ -1,8 +1,8 @@
-.account {
-    height: 35px;
+.avatar-root {
+    height: 2em;
+    width: 2em;
     border-radius: 50%;
     background: #004d40;
-    width: 35px;
     align-items: center;
     display: flex;
     text-align: center;
@@ -11,5 +11,4 @@
     font-weight: 400;
     align-items: center;
     justify-content: center;
-    margin-left:12px;
 }
