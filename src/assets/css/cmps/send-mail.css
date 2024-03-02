@@ -1,0 +1,93 @@
+:root {
+  --primary-bg-color: #c3e7fe;
+  --modal-bg-color: white;
+  --modal-header-bg-color: #f2f6fc;
+  --button-bg-color: #0b57d0;
+  --input-shadow-color: rgba(100, 121, 143, 0.122);
+}
+
+.nav-bar-compose-root {
+  display: flex;
+}
+
+.nav-bar-compose-root svg {
+  margin-right: 10px;
+  font-size: 24px;
+}
+
+.nav-bar-compose-root .compose-button {
+  background-color: var(--primary-bg-color);
+  padding: 20px;
+  border-radius: 15px;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.send-mail-modal {
+  position: absolute;
+  width: 552px;
+  min-height: 50%;
+  bottom: 0;
+  background: var(--modal-bg-color);
+  right: 10%;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0px 8px 10px 1px rgba(0,0,0,.14), 0px 3px 14px 2px rgba(0,0,0,.12), 0px 5px 5px -3px rgba(0,0,0,.2);
+  border-radius: 20px 20px 0 0;
+}
+
+.send-mail-modal header {
+  width: 100%;
+  background: var(--modal-header-bg-color);
+  text-align: start;
+  font-weight: 500;
+  padding: 10px 0;
+  line-height: 20px;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.close-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: inherit;
+}
+
+
+.close-button svg {
+  width: 24px;
+  height: 24px;
+}
+.send-mail-modal section {
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.send-mail-modal input,textarea {
+  background: var(--modal-bg-color);
+  color: black;
+  border: none;
+  outline: none;
+  padding: 8px 0;
+  line-height: 20px;
+}
+.send-mail-modal input {
+  box-shadow: inset 0 -1px 0 0 var(--input-shadow-color);
+}
+
+
+.send-mail-modal footer {
+  margin: auto 10px 10px 10px;
+}
+
+.send-mail-modal .send-button {
+  background-color: var(--button-bg-color);
+  color: white;
+  border-radius: 18px;
+  padding: 10px 20px;
+}
