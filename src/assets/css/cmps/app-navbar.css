@@ -21,9 +21,9 @@
     display: flex;
 }
 .nav-bar-compose-root button {
-  background-color: #c3e7fe;
+  /* background-color: #c3e7fe;
   padding: 20px;
   border-radius: 15px;
   font-size: 0.9rem;
-  font-weight: 600;
+  font-weight: 600; */
 }

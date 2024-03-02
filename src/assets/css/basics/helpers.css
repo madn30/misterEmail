@@ -194,7 +194,7 @@
   display: inline-flex;
 }
 
-.icon-container:hover::before {
+/* .icon-container:hover::before {
   content: "";
   position: absolute;
   height: 30px;
@@ -205,4 +205,4 @@
   left: 50%;
   transform: translate(-50%, -50%);
   top: 50%;
-}
+} */
