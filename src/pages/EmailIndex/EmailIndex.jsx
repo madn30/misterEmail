@@ -6,22 +6,26 @@ import EmailList from "../../components/EmailList/EmailList";
 
 export default function EmailIndex() {
   const [emails, setEmails] = useState(null);
-  const [filterBy, setFilterBy] = useState();
+  const [filterBy, setFilterBy] = useState(emailService.getDefaultFilter());
+
   useEffect(() => {
     const loadEmails = async () => {
       try {
-        const emails = await emailService.query(null);
+        const emails = await emailService.query(filterBy);
         setEmails(emails);
       } catch (err) {
         console.error(err);
       }
     };
     loadEmails();
-  }, []);
+  }, [filterBy]);
 
+  function onSetFilter(fieldsToUpdate) {
+    setFilterBy((prevFilter) => ({ ...prevFilter, ...fieldsToUpdate }));
+  }
   const onRemoveMail = async (idx) => {
     try {
-      const resp = await emailService.remove(idx);
+      await emailService.remove(idx);
       setEmails((prevEmails) => prevEmails.filter((mail) => mail.id !== idx));
     } catch (err) {
       console.error(err);
@@ -29,10 +33,9 @@ export default function EmailIndex() {
   };
 
   if (!emails) return <div>Loading...</div>;
-  console.log(emails);
   return (
     <Paper>
-      <EmailFilter />
+      <EmailFilter onSetFilter={onSetFilter} />
       <EmailList emails={emails} onRemoveMail={onRemoveMail} />
     </Paper>
   );
