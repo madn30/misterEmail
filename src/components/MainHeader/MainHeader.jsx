@@ -8,6 +8,7 @@ import { IoSettingsOutline as SettingIcon } from "react-icons/io5";
 import { CgMenuGridO as MenuIcon } from "react-icons/cg";
 import { IoIosHelpCircleOutline as SupportIcon } from "react-icons/io";
 import ToolTip from "../ToolTip/ToolTip";
+import Avatar from "../Avatar/Avatar";
 
 const iconComponents = {
   IoSettingsOutline: SettingIcon,
@@ -16,6 +17,8 @@ const iconComponents = {
 };
 
 export default function MainHeader() {
+  const {fullname} = JSON.parse(localStorage.getItem("user")) || "";
+
   return (
     <header className="app-header">
       <div className="app-header-left">
@@ -25,17 +28,19 @@ export default function MainHeader() {
       <div className="flex space-between">
         <Search />
         <div className="flex align-center">
-          {headerIcons.map(
-            ({ title, icon }, index) => {
+          {headerIcons.map(({ title, icon }, index) => {
             const IconComponent = iconComponents[icon];
-            return IconComponent && (
-              <ToolTip key={index}>
-                <IconButton title={title}>
-                  <IconComponent />
-                </IconButton>
-              </ToolTip>
+            return (
+              IconComponent && (
+                <ToolTip key={index} content={title}>
+                  <IconButton title={title}>
+                    <IconComponent />
+                  </IconButton>
+                </ToolTip>
+              )
             );
           })}
+          <Avatar name={fullname} />
         </div>
       </div>
     </header>
