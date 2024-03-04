@@ -25,10 +25,8 @@ export const createRouting = (routesArray) => (
     <Routes>
       {routesArray.map((route, index) => {
         const Layout = route.layout || React.Fragment;
-        // Ensure the lazy-loaded component is directly rendered as a child of the layout
-        const Element = lazy(route.element); // Adjust this if necessary to match your implementation
+        const Element = lazy(route.element); 
   
-        // Use a React fragment to avoid unnecessary div wrappers, which could interfere with layout or styling
         return (
           <Route key={index} path={route.path} element={
             <Layout>
