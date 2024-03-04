@@ -13,13 +13,10 @@
   .icon-button::before {
     content: "";
     position: absolute;
-    width: 140%; 
-    height: 140%;
     left: -20%; 
     top: -20%;
-    border-radius: 50%;
+    border-radius: 10%;
     transition: all 0.3s ease-in-out;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.6);
     z-index: -1;
   }
   

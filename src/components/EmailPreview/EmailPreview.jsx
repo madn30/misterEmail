@@ -1,64 +1,51 @@
-import React, { useState } from "react";
-
-import {FaTrash } from "react-icons/fa";
-import useFormattedTime from "../../hooks/useFormattedTime";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import IconButton from "../IconButton/IconButton";
 import Star from "../Star/Star";
+import { FaTrash } from "react-icons/fa";
+import useFormattedTime from "../../hooks/useFormattedTime";
+import SmartTypography from "../SmartTypography/SmartTypography";
 
-export default function EmailPreview({ email, onRemoveMail }) {
+const EmailPreview = ({ email, onRemoveMail }) => {
   const navigate = useNavigate();
   const formattedTime = useFormattedTime(email.sentAt);
+  const emailClass = email.isRead
+    ? "email-preview-read"
+    : "email-preview-unread";
 
-  const actionIcons = [
-    // { id: "reply", icon: FaReply, action: () => console.log("Reply action") },
-    // { id: "edit", icon: FaRegEdit, action: () => console.log("Edit action") },
-    {
-      content: "Remove",
-      id: "remove",
-      icon: FaTrash,
-      action: (event) => {
-        event.stopPropagation();
-        onRemoveMail(email.id);
-      },
-    },
-  ];
+  const handleRemove = (event) => {
+    event.stopPropagation();
+    onRemoveMail(email.id);
+  };
 
-  const renderActionIcons = () =>
-    actionIcons.map((iconConfig) => (
-      <IconButton
-      key={iconConfig.id}
-        className="icon-container"
-        onClick={(event) => iconConfig.action(event)}
-      >
-        {React.createElement(iconConfig.icon)}
-      </IconButton>
-    ));
-
-  function onEmailClick() {
-    navigate(`/email-detail/${email.id}`);
-  }
+  const onEmailClick = () => navigate(`/email-detail/${email.id}`);
 
   return (
-    <div
-      onClick={onEmailClick}
-      className="table-grid-row email-preview"
-      onMouseEnter={(e) => e.currentTarget.classList.add("hovered")}
-      onMouseLeave={(e) => e.currentTarget.classList.remove("hovered")}
-    >
-      <div className="flex align-center gap10">
+    <div className={`email-preview ${emailClass}`} onClick={onEmailClick}>
+      <div className="row-left">
         <input type="checkbox" />
-        <Star isStarring={email.isStarred} />
-        <h5>{email.to}</h5>
+        <Star isStarring={email.isStarred} className={'row-left-star'}/>
+        <SmartTypography className="mail-typography">
+          {email.to}
+        </SmartTypography>
       </div>
-      <h5>{email.subject}</h5>
-      <div className="email-body-container">
-        <h5>{email.body}</h5>
+      <div className="row-center">
+        <SmartTypography className="row-center-subject mail-typography">
+          {email.subject} &nbsp; <span>{email.body}</span>
+        </SmartTypography>
       </div>
-      <div className="email-preview-time">
-        <h5>{formattedTime}</h5>
+      <div className="row-right">
+        <SmartTypography className="row-right-time mail-typography">
+          {formattedTime}
+        </SmartTypography>
       </div>
-      <div className="actions-icons">{renderActionIcons()}</div>
+      <div className="actions-icons">
+        <IconButton className="icon-container" onClick={handleRemove}>
+          <FaTrash />
+        </IconButton>
+      </div>
     </div>
   );
-}
+};
+
+export default EmailPreview;

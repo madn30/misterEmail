@@ -70,8 +70,8 @@ function _createEmails() {
     emails = [
       {
         id: "e101",
-        subject: "Miss you!",
-        body: "Would love to catch up sometimes",
+        subject: "[Slack] Vicky Polatov - Coding Academy mentioned you in #ca-preground",
+        body: "You have a new mention in Coding Academy - PreGround Course - JAN 24 (codingacademy-2oz1401.slack.com)From #ca-preground Vicky Polatov - Coding Academy January",
         isRead: false,
         isStarred: false,
         sentAt: 1551133930594,
@@ -80,9 +80,9 @@ function _createEmails() {
       },
       {
         id: "e102",
-        subject: "Miss you!",
-        body: "Would love to catch up sometimes",
-        isRead: false,
+        subject: "[Slack] Vicky Polatov - Coding Academy mentioned you in #ca-preground",
+        body: "You have a new mention in Coding Academy - PreGround Course - JAN 24 (codingacademy-2oz1401.slack.com)From #ca-preground Vicky Polatov - Coding Academy January",
+        isRead: true,
         isStarred: false,
         sentAt: 1551133930594,
         removedAt: null,
@@ -90,8 +90,8 @@ function _createEmails() {
       },
       {
         id: "e103",
-        subject: "Miss you!",
-        body: "Would love to catch up sometimes",
+        subject: "[Slack] Vicky Polatov - Coding Academy mentioned you in #ca-preground",
+        body: "You have a new mention in Coding Academy - PreGround Course - JAN 24 (codingacademy-2oz1401.slack.com)From #ca-preground Vicky Polatov - Coding Academy January",
         isRead: false,
         isStarred: true,
         sentAt: 1551133930594,

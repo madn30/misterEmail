@@ -9,7 +9,6 @@
   display: -webkit-flex;
   display: flex;
   float: none;
-  /* height: 80px; */
   margin: 0 16px;
   min-width: 40px;
 }
