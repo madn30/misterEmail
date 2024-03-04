@@ -24,8 +24,8 @@ export default function Compose() {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log('Sending email:', email);
-    setEmail({ to: '', subject: '', message: '' }); // Reset form
-    setIsOpen(false); // Close form
+    setEmail({ to: '', subject: '', message: '' });
+    setIsOpen(false); 
   };
 
   return (
