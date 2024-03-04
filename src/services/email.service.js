@@ -93,7 +93,7 @@ function _createEmails() {
         subject: "Miss you!",
         body: "Would love to catch up sometimes",
         isRead: false,
-        isStarred: false,
+        isStarred: true,
         sentAt: 1551133930594,
         removedAt: null,
         to: "user@appsus.com",
