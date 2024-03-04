@@ -11,7 +11,6 @@ const SmartTypography = ({ children, className = '', style = {}, isAbsolute = fa
       const container = containerRef.current;
       if (!container) return;
 
-      // Update for any React component or text content
       const isOverflow = container.scrollWidth > container.clientWidth || container.scrollHeight > container.clientHeight;
       setIsOverflowing(isOverflow);
     };
@@ -30,7 +29,6 @@ const SmartTypography = ({ children, className = '', style = {}, isAbsolute = fa
     checkOverflow();
     updateTooltipPosition();
 
-    // Re-check on window resize
     const handleResize = () => {
       checkOverflow();
       updateTooltipPosition();
