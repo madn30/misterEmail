@@ -5,6 +5,9 @@
   grid-template-columns: subgrid;
   grid-column: 1 / -1;
 }
+.app-header-avatar {
+  margin-left: 12px;
+}
 
 .app-header section.container {
   display: flex;

@@ -35,19 +35,14 @@
   padding-top: 10px;
   gap: 20px;
 }
-.table-grid-row input {
-  margin: 0 10px 0 13px;
-}
-.table-grid-row svg {
-  margin: 0 10px 0 0;
-}
+
 
 .email-preview-grid {
   display: grid;
   grid-template-areas:
     ". header"
     "avatar content";
-  grid-template-columns: 4rem 1fr;
+  grid-template-columns: 3rem 1fr;
   gap: 6px;
   row-gap: 1em;
 }

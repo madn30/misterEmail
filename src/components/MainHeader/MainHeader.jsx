@@ -40,7 +40,7 @@ export default function MainHeader() {
               )
             );
           })}
-          <Avatar name={fullname} />
+          <Avatar name={fullname} className={'app-header-avatar'}/>
         </div>
       </div>
     </header>
