@@ -47,4 +47,8 @@
 
 .email-preview:hover .actions-icons {
   display: flex; 
+  justify-content: space-between;
+}
+.email-preview:hover .actions-icons  .icon-container:not(:last-child){
+  margin-right: 20px;
 }
