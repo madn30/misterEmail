@@ -1,0 +1,36 @@
+.formContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.searchInput {
+    padding: 10px;
+    margin-right: 10px;
+    border: 2px solid #007bff;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.statusSelect {
+    padding: 10px;
+    border: 2px solid #007bff;
+    border-radius: 5px;
+    font-size: 16px;
+    background-color: white;
+    cursor: pointer;
+}
+
+/* Enhancements for focus states */
+.searchInput:focus,
+.statusSelect:focus {
+    outline: none;
+    border-color: #0056b3;
+    box-shadow: 0 0 0 2px rgba(0,123,255,.25);
+}
+
+/* Styling for options - can be adjusted based on browser support */
+option {
+    padding: 10px;
+}
