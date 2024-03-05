@@ -1,6 +1,6 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect } from "react";
 
-const SmartTypography = ({ children, className = '', style = {}, isAbsolute = false }) => {
+const SmartTypography = ({ children, className = "", style = {} }) => {
   const containerRef = useRef(null);
   const [isOverflowing, setIsOverflowing] = useState(false);
 
@@ -9,7 +9,9 @@ const SmartTypography = ({ children, className = '', style = {}, isAbsolute = fa
       const container = containerRef.current;
       if (!container) return;
 
-      const isOverflow = container.scrollWidth > container.clientWidth || container.scrollHeight > container.clientHeight;
+      const isOverflow =
+        container.scrollWidth > container.clientWidth ||
+        container.scrollHeight > container.clientHeight;
       setIsOverflowing(isOverflow);
     };
 
@@ -18,15 +20,15 @@ const SmartTypography = ({ children, className = '', style = {}, isAbsolute = fa
     const handleResize = () => {
       checkOverflow();
     };
-    window.addEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
 
-    return () => window.removeEventListener('resize', handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, [children]);
 
   return (
     <div
-      className={`smart-typography ${className} ${isOverflowing ? 'overflow' : ''}`}
-      style={{ position: isAbsolute ? 'absolute' : 'relative', ...style }}
+      className={`smart-typography ${className} ${isOverflowing ? "overflow" : ""}`}
+      style={{ position: "relative", ...style }} 
       ref={containerRef}
     >
       {children}
