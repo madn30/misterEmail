@@ -76,7 +76,7 @@ function getDefaultFilter() {
 
 function _createEmail(emailData) {
   const { email } = userService.getUser();
-
+  console.log(emailData)
   const defaultEmail = {
     id: emailData.id || utilService.makeId(),
     subject: emailData.subject || "No Subject",

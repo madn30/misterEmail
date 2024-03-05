@@ -7,7 +7,7 @@ import { emailService } from "../../../services/email.service";
 
 export default function EmailCompose() {
   const [isOpen, setIsOpen] = useState(false);
-  const [email, setEmail] = useState({ to: "", subject: "", message: "" });
+  const [email, setEmail] = useState({ to: "", subject: "", body: "" });
 
   const onMailOpen = () => {
     setIsOpen(true);
@@ -59,7 +59,7 @@ export default function EmailCompose() {
               onChange={handleChange}
             />
             <textarea
-              name="message"
+              name="body"
               rows="10"
               maxLength="2000"
               placeholder="Your message here"
