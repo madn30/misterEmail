@@ -5,7 +5,6 @@ const STORAGE_KEY = "user";
 
 export const userService = {
   query,
-  getFirstLetterAccount,
   getUser,
 };
 
@@ -15,7 +14,6 @@ async function query() {
   const user = await storageService.query(STORAGE_KEY);
   return user;
 }
-async function getFirstLetterAccount() {}
 
 function getUser() {
   let user = utilService.loadFromStorage(STORAGE_KEY);

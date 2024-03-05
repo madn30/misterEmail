@@ -8,7 +8,7 @@ import { userService } from "../../services/user.service";
 
 export default function EmailDetails() {
   const [email, setEmail] = useState(null);
-  const {fullname} = JSON.parse(localStorage.getItem("user")) || "";
+  const { fullName } = userService.getUser();
   const { id } = useParams();
 
   useEffect(() => {
@@ -30,7 +30,7 @@ export default function EmailDetails() {
   return (
     <Paper className="email-details-root email-preview-grid">
       <header className="subject">{email.subject}</header>
-      <Avatar name={fullname} className="avatar" />
+      <Avatar name={fullName} className="avatar" />
       <section className="full-width email-details-content">
         <div className="flex column">
           <span>{email.to}</span>

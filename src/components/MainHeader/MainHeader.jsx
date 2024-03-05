@@ -6,11 +6,12 @@ import IconButton from "../IconButton/IconButton";
 import ToolTip from "../ToolTip/ToolTip";
 import Avatar from "../Avatar/Avatar";
 import { headerIcons } from "./helper";
-import Logo from '../Icons/Logo/Logo'
+import Logo from "../Icons/Logo/Logo";
 
 import { CgMenuGridO as MenuIcon } from "react-icons/cg";
 import { IoIosHelpCircleOutline as SupportIcon } from "react-icons/io";
 import { IoSettingsOutline as SettingIcon } from "react-icons/io5";
+import { userService } from "../../services/user.service";
 
 const iconComponents = {
   IoSettingsOutline: SettingIcon,
@@ -19,7 +20,7 @@ const iconComponents = {
 };
 
 export default function MainHeader() {
-  const {fullname} = JSON.parse(localStorage.getItem("user")) || "";
+  const { fullName } = userService.getUser();
 
   return (
     <header className="app-header">
@@ -42,7 +43,7 @@ export default function MainHeader() {
               )
             );
           })}
-          <Avatar name={fullname} className={'app-header-avatar'}/>
+          <Avatar name={fullName} className={"app-header-avatar"} />
         </div>
       </div>
     </header>
