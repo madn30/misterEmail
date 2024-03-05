@@ -1,11 +1,12 @@
 import React from "react";
+import { NavLink } from "react-router-dom";
 
-export default function NavItem(prop) {
-  const { title, icon:Icon, ...rest } = prop;
+export default function NavItem({ navItem }) {
+  const Icon = navItem.icon;
   return (
-    <div className="nav-item">
+    <NavLink to={navItem.to} className="nav-item">
       <Icon />
-      <a href="#">{title}</a>
-    </div>
+      {navItem.title}
+    </NavLink>
   );
 }
