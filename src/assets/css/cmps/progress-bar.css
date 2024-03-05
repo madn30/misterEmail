@@ -1,0 +1,23 @@
+.progress-bar-container {
+    height: 20px;
+    width: 100%;
+    background-color: #e0e0de;
+    border-radius: 50px;
+    margin: 20px 0;
+  }
+  
+  .progress-bar-filler {
+    height: 100%;
+    /* width will be set inline in the component, so it's omitted here */
+    background-color: #4caf50;
+    border-radius: inherit;
+    text-align: right;
+    transition: width 0.3s ease-in-out;
+  }
+  
+  .progress-bar-label {
+    padding: 5px;
+    color: white;
+    font-weight: bold;
+  }
+  
