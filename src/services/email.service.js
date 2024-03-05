@@ -15,6 +15,7 @@ const STORAGE_KEY = "emails";
 _createEmails();
 
 async function query(filterBy) {
+  const { email } = userService.getUser();
   let emails = await storageService.query(STORAGE_KEY);
   if (filterBy) {
     const { search = "", status, route } = filterBy;
@@ -39,9 +40,7 @@ async function query(filterBy) {
         case "inbox":
           return emails;
         case "sent":
-          emails = emails.filter(
-            (email) => email.from === userService.getEmail()
-          );
+          emails = emails.filter((e) => e.from === email);
         default:
           return emails;
       }
@@ -76,12 +75,14 @@ function getDefaultFilter() {
 }
 
 function _createEmail(emailData) {
+  const { email } = userService.getUser();
+
   const defaultEmail = {
     id: emailData.id || utilService.makeId(),
     subject: emailData.subject || "No Subject",
     body: emailData.body || "",
-    to: emailData.to , 
-    from: userService.getEmail() , 
+    to: emailData.to,
+    from: email,
     isRead: emailData.isRead || false,
     isStarred: emailData.isStarred || false,
     sentAt: emailData.sentAt || Date.now(),

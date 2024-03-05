@@ -6,7 +6,7 @@ const STORAGE_KEY = "user";
 export const userService = {
   query,
   getFirstLetterAccount,
-  getEmail,
+  getUser,
 };
 
 _createAccount();
@@ -17,9 +17,9 @@ async function query() {
 }
 async function getFirstLetterAccount() {}
 
-function getEmail() {
+function getUser() {
   let user = utilService.loadFromStorage(STORAGE_KEY);
-  return user.email;
+  return { email: user.email, fullName: user.fullname };
 }
 
 function _createAccount() {

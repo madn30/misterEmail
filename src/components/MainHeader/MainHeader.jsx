@@ -1,14 +1,16 @@
 import React from "react";
+
 import MainMenu from "../MainMenu/MainMenu";
-import Logo from "../Logo/Logo";
 import Search from "../Search/Search";
 import IconButton from "../IconButton/IconButton";
-import { headerIcons } from "./helper";
-import { IoSettingsOutline as SettingIcon } from "react-icons/io5";
-import { CgMenuGridO as MenuIcon } from "react-icons/cg";
-import { IoIosHelpCircleOutline as SupportIcon } from "react-icons/io";
 import ToolTip from "../ToolTip/ToolTip";
 import Avatar from "../Avatar/Avatar";
+import { headerIcons } from "./helper";
+import Logo from '../Icons/Logo/Logo'
+
+import { CgMenuGridO as MenuIcon } from "react-icons/cg";
+import { IoIosHelpCircleOutline as SupportIcon } from "react-icons/io";
+import { IoSettingsOutline as SettingIcon } from "react-icons/io5";
 
 const iconComponents = {
   IoSettingsOutline: SettingIcon,
