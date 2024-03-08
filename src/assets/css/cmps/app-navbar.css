@@ -1,5 +1,3 @@
-
-
 .nav-item {
   padding-left: 20px;
   height: 40px;
@@ -12,12 +10,18 @@
 .nav-item:hover {
   background-color: rgba(32, 33, 36, 0.059);
 }
-.nav-item:active {
-  background-color: #d3e3fd;
+.active {
+  background-color: #d3e3fd !important;
+  color: black !important;
 }
 .nav-bar-compose-root {
-    padding-left: 6px;
-    margin-bottom: 10px;
-    display: flex;
+  
+  padding-left: 6px;
+  margin-bottom: 10px;
+  display: flex;
 }
 
+.unread-emails {
+  margin-left: auto;
+  margin-right: 10px;
+}
