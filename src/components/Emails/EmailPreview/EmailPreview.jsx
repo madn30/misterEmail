@@ -6,7 +6,7 @@ import { FaTrash } from "react-icons/fa";
 import useFormattedTime from "../../../hooks/useFormattedTime";
 import SmartTypography from "../../SmartTypography/SmartTypography";
 
-const EmailPreview = ({ email, onRemoveMail }) => {
+const EmailPreview = ({ email, onRemoveEmail }) => {
   const navigate = useNavigate();
   const formattedTime = useFormattedTime(email.sentAt);
   const emailClass = email.isRead
@@ -15,11 +15,11 @@ const EmailPreview = ({ email, onRemoveMail }) => {
 
   const handleRemove = (event) => {
     event.stopPropagation();
-    onRemoveMail(email.id);
+    onRemoveEmail(email.id);
   };
 
-  const onEmailClick = () => navigate(`/email-detail/${email.id}`);
-
+  const onEmailClick = () => navigate(`${email.id}`);
+  
   return (
     <div className={`email-preview ${emailClass}`} onClick={onEmailClick}>
       <div className="row-left">

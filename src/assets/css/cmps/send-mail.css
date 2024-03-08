@@ -6,24 +6,29 @@
   --input-shadow-color: rgba(100, 121, 143, 0.122);
 }
 
-.nav-bar-compose-root {
+.nav-bar-compose-root{
   display: flex;
 }
 
-.nav-bar-compose-root svg {
+.compose-button svg {
   margin-right: 10px;
   font-size: 24px;
 }
 
-.nav-bar-compose-root .compose-button {
+.compose-button {
+  cursor: pointer;
+  width: fit-content;
+  margin: 0px 5px 10px 5px;
   background-color: var(--primary-bg-color);
-  padding: 20px;
+  padding: 15px 20px;
   border-radius: 15px;
   font-size: 0.9rem;
   font-weight: 600;
+  
 }
 
 .send-mail-modal {
+  z-index: 1000;
   position: absolute;
   width: 552px;
   min-height: 50%;
