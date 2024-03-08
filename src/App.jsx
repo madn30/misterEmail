@@ -1,8 +1,19 @@
 import { useEffect } from "react";
-import { HashRouter as Router } from "react-router-dom";
-
-import { createRouting, routes } from "./routes";
+import {
+  Navigate,
+  Route,
+  HashRouter as Router,
+  Routes,
+  useParams,
+} from "react-router-dom";
+import MainLayout from "./layouts/MainLayout";
+// import { createRouting, routes } from "./routes";
 import { userService } from "./services/user.service";
+import { Snackbar } from "./components/SnackBar/SnackBar";
+import EmailIndex from "./pages/EmailIndex/EmailIndex";
+import EmailCompose from "./components/Emails/EmailCompose/EmailCompose";
+import EmailDetails from "./pages/EmailDetails/EmailDetails";
+import { createRouting, routes } from "./routes";
 
 function App() {
   useEffect(() => {
@@ -15,7 +26,15 @@ function App() {
     };
     loadUser();
   }, []);
-  return <Router>{createRouting(routes)}</Router>;
+
+  return (
+    <>
+      <Router basename="/">
+        {createRouting(routes)}
+      </Router>
+      <Snackbar />
+    </>
+  );
 }
 
 export default App;
