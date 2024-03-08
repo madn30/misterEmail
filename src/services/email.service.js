@@ -7,7 +7,9 @@ export const emailService = {
   save,
   remove,
   getById,
+  getDefaultEmail,
   getDefaultFilter,
+  countUnreadEmailsInFolder,
 };
 
 const STORAGE_KEY = "emails";
@@ -18,7 +20,7 @@ async function query(filterBy) {
   const { email } = userService.getUser();
   let emails = await storageService.query(STORAGE_KEY);
   if (filterBy) {
-    const { search = "", status, route } = filterBy;
+    const { search = "", status, folder } = filterBy;
 
     if (search) {
       emails = emails.filter(
@@ -33,12 +35,12 @@ async function query(filterBy) {
       const isRead = status === "read";
       emails = emails.filter((email) => email.isRead === isRead);
     }
-    if (route) {
-      switch (route) {
+    if (folder) {
+      switch (folder) {
         case "starred":
           emails = emails.filter((email) => email.isStarred);
         case "inbox":
-          return emails;
+          return emails.filter((e) => e.from !== email);
         case "sent":
           emails = emails.filter((e) => e.from === email);
         default:
@@ -58,80 +60,50 @@ function remove(id) {
 }
 
 function save(emailToSave) {
-  const email = _createEmail(emailToSave);
   if (emailToSave.id) {
-    return storageService.put(STORAGE_KEY, email);
+    return storageService.put(STORAGE_KEY, emailToSave);
   } else {
     emailToSave.isOn = false;
-    return storageService.post(STORAGE_KEY, email);
+    return storageService.post(STORAGE_KEY, emailToSave);
   }
+}
+function countUnreadEmailsInFolder(folder) {
+  let emails = utilService.loadFromStorage(STORAGE_KEY);
+  const count = emails.filter(
+    (email) => email?.folder?.includes(folder) && !email.isRead
+  ).length;
+  return count;
+}
+
+function getDefaultEmail() {
+  const { email } = userService.getUser();
+
+  return {
+    id: "",
+    subject: "",
+    body: "",
+    to: "",
+    from: email,
+    isRead: false,
+    isStarred: false,
+    sentAt: "",
+    removedAt: "",
+    sentAt: new Date(),
+    folder: [],
+  };
 }
 function getDefaultFilter() {
   return {
-    route: "inbox",
     search: "",
     status: "all",
+    folder: "inbox",
   };
 }
 
-function _createEmail(emailData) {
-  const { email } = userService.getUser();
-  console.log(emailData)
-  const defaultEmail = {
-    id: emailData.id || utilService.makeId(),
-    subject: emailData.subject || "No Subject",
-    body: emailData.body || "",
-    to: emailData.to,
-    from: email,
-    isRead: emailData.isRead || false,
-    isStarred: emailData.isStarred || false,
-    sentAt: emailData.sentAt || Date.now(),
-    removedAt: emailData.removedAt || null,
-  };
-
-  return defaultEmail;
-}
 function _createEmails() {
   let emails = utilService.loadFromStorage(STORAGE_KEY);
   if (!emails || !emails.length) {
-    emails = [
-      {
-        id: "e101",
-        subject:
-          "[Slack] Vicky Polatov - Coding Academy mentioned you in #ca-preground",
-        body: "You have a new mention in Coding Academy - PreGround Course - JAN 24 (codingacademy-2oz1401.slack.com)From #ca-preground Vicky Polatov - Coding Academy January",
-        isRead: false,
-        isStarred: false,
-        sentAt: 1551133930594,
-        removedAt: null,
-        to: "user@appsus.com",
-        from: "user@appsus.com",
-      },
-      {
-        id: "e102",
-        subject:
-          "[Slack] Vicky Polatov - Coding Academy mentioned you in #ca-preground",
-        body: "You have a new mention in Coding Academy - PreGround Course - JAN 24 (codingacademy-2oz1401.slack.com)From #ca-preground Vicky Polatov - Coding Academy January",
-        isRead: true,
-        isStarred: false,
-        sentAt: 1551133930594,
-        removedAt: null,
-        to: "user@appsus.com",
-        from: "user@appsus.com",
-      },
-      {
-        id: "e103",
-        subject:
-          "[Slack] Vicky Polatov - Coding Academy mentioned you in #ca-preground",
-        body: "You have a new mention in Coding Academy - PreGround Course - JAN 24 (codingacademy-2oz1401.slack.com)From #ca-preground Vicky Polatov - Coding Academy January",
-        isRead: false,
-        isStarred: true,
-        sentAt: 1551133930594,
-        removedAt: null,
-        to: "user@appsus.com",
-        from: "test@test.com",
-      },
-    ];
+    emails = [];
     utilService.saveToStorage(STORAGE_KEY, emails);
   }
 }
