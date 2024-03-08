@@ -3,6 +3,7 @@
 }
 .content-container {
   grid-area: siteContent;
+  overflow-y: auto; 
   padding: 8px;
 }
 /* GRIDS */
@@ -12,10 +13,12 @@
   grid-gap: 10px;
 }
 .main-layout-grid {
+  height: 100vh;
+  margin: 5px;
   column-gap: 24px;
-  grid-template: min-content 1fr min-content / 12.25rem minmax(0, 1fr);
   grid-template-columns: 15.5rem minmax(0, 1fr);
   display: grid;
+  grid-template-rows: max-content;
   grid-template-areas:
     "header header"
     "navBar siteContent";
@@ -42,6 +45,7 @@
   grid-template-areas:
     ". header"
     "avatar content";
+    grid-template-rows: max-content;
   grid-template-columns: 3rem 1fr;
   gap: 6px;
   row-gap: 1em;
