@@ -10,7 +10,7 @@ export default function EmailDetails() {
   const [email, setEmail] = useState(null);
   const { fullName } = userService.getUser();
   const { id } = useParams();
-
+  
   useEffect(() => {
     const loadEmail = async () => {
       try {
