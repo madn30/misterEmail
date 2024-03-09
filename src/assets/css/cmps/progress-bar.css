@@ -8,7 +8,6 @@
   
   .progress-bar-filler {
     height: 100%;
-    /* width will be set inline in the component, so it's omitted here */
     background-color: #4caf50;
     border-radius: inherit;
     text-align: right;

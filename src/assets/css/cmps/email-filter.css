@@ -22,7 +22,6 @@
     cursor: pointer;
 }
 
-/* Enhancements for focus states */
 .searchInput:focus,
 .statusSelect:focus {
     outline: none;
@@ -30,7 +29,6 @@
     box-shadow: 0 0 0 2px rgba(0,123,255,.25);
 }
 
-/* Styling for options - can be adjusted based on browser support */
 option {
     padding: 10px;
 }
