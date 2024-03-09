@@ -1,7 +1,16 @@
-import React from 'react'
+import React from "react";
+import AdvancedSearch from "./AdvancedSearch";
 
 export default function Search() {
   return (
-   <input className='search'  placeholder='Search mail'/>
-  )
+    <div className="search-root">
+      <input
+        id="search-input"
+        className="search-input"
+        placeholder="Search mail"
+        aria-label="Search mail"
+      />
+      <AdvancedSearch />
+    </div>
+  );
 }

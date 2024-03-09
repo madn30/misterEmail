@@ -1,19 +1,23 @@
 import React, { useEffect, useState } from "react";
-import { Outlet, useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 
 import { emailService } from "../../services/email.service";
-
 import Paper from "../../components/Paper/Paper";
-import EmailFilter from "../../components/Emails/EmailFilter/EmailFilter";
 import EmailList from "../../components/Emails/EmailList/EmailList";
 import ProgressBar from "../../components/ProgressBar/ProgressBar";
 import { eventBusService } from "../../services/event-bus.service";
 
 export default function EmailIndex() {
   const [emails, setEmails] = useState(null);
-  const [filterBy, setFilterBy] = useState(emailService.getDefaultFilter());
-  const [composeForm, setComposeForm] = useState(null);
+  const [searchParams] = useSearchParams();
+
   const { folder } = useParams();
+  const initialFilter =
+    searchParams.size > 0
+      ? emailService.getFilterFromParams(searchParams)
+      : { ...emailService.getDefaultFilter(), folder };
+
+  const [filterBy, setFilterBy] = useState(initialFilter);
 
   const countEmails = emails
     ? (emails.filter((mail) => mail.isRead).length / emails.length) * 100
@@ -32,14 +36,15 @@ export default function EmailIndex() {
   }, [filterBy]);
 
   useEffect(() => {
-    setFilterBy((prevFilter) => {
-      return { ...prevFilter, folder };
-    });
-  }, [folder]);
+    if (folder) {
+      setFilterBy((prevFilter) => ({ ...prevFilter, folder }));
+    }
+  }, [folder, searchParams]);
 
   useEffect(() => {
     const unsubscribe = eventBusService.on("compose-form", (payload) => {
-      setComposeForm(payload);
+      console.log(payload);
+      onAddEmail(payload);
     });
 
     return () => {
@@ -47,18 +52,12 @@ export default function EmailIndex() {
     };
   }, []);
 
-  useEffect(() => {
-    if (composeForm) {
-      onAddEmail(composeForm);
-    }
-  }, [composeForm]);
-
-  
   const onAddEmail = async (email) => {
     try {
-      await emailService.save(email);
-      const updatedEmails = await emailService.query(filterBy);
-      setEmails(updatedEmails);
+      const emailUpdated = await emailService.save(email);
+      if (folder === "sent") {
+        setEmails((prevEmails) => [...prevEmails, emailUpdated]);
+      }
     } catch (err) {
       console.error(err);
     }
@@ -74,15 +73,9 @@ export default function EmailIndex() {
       console.error(err);
     }
   };
-
-  function onSetFilter(fieldsToUpdate) {
-    if (fieldsToUpdate)
-      setFilterBy((prevFilter) => ({ ...prevFilter, ...fieldsToUpdate }));
-  }
   if (!emails) return <div>Loading...</div>;
   return (
     <Paper className="content-container">
-      {/* <EmailFilter onSetFilter={onSetFilter} /> */}
       <EmailList emails={emails} onRemoveEmail={onRemoveEmail} />
       {!!countEmails && <ProgressBar progress={countEmails} />}
     </Paper>

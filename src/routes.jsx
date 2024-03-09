@@ -11,12 +11,16 @@ export const routes = [
     element: <MainLayout />,
     children: [
       {
-        path: ":folder?",
+        path: ":folder",
         element: <EmailIndex />,
       },
 
       {
         path: ":folder/:id",
+        element: <EmailDetails />,
+      },
+      {
+        path: ":advanced-search?",
         element: <EmailDetails />,
       },
     ],
