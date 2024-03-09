@@ -4,7 +4,6 @@
 .content-container {
   grid-area: siteContent;
   overflow-y: auto; 
-  padding: 8px;
 }
 /* GRIDS */
 .simple-cards-grid {
