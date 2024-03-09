@@ -81,11 +81,23 @@ export default function EmailIndex() {
 
   const onRemoveEmail = async (id) => {
     try {
-      await emailService.remove(id);
-      setEmails((prevEmails) => prevEmails.filter((email) => email.id !== id));
-      eventBusService.emit("show-message", {
-        message: "Conversation moved to Trash.",
-      });
+      let message = "Conversation moved to Trash.";
+      let updatedEmails = emails.filter((email) => email.id !== id); 
+  
+      if (folder === "trash") {
+        await emailService.remove(id);
+        message = "Conversation removed.";
+      } else {
+        const emailToUpdate = emails.find((email) => email.id === id);
+        if (!emailToUpdate) {
+          throw new Error("Email not found");
+        }
+        const updatedEmail = { ...emailToUpdate, isTrash: true };
+        await emailService.save(updatedEmail);
+      }
+  
+      setEmails(updatedEmails);
+      eventBusService.emit("show-message", { message });
     } catch (err) {
       console.error("Failed to remove email:", err);
     }

@@ -24,6 +24,7 @@ export default function EmailCompose() {
       ...defaultEmail,
       ...email,
       folder: ["sent"],
+      isRead: true,
     };
     try {
       eventBusService.emit("compose-form", payload);
@@ -41,11 +42,7 @@ export default function EmailCompose() {
       <form className="send-mail-modal" onSubmit={handleSubmit}>
         <header>
           New message
-          <button
-            type="button"
-            onClick={handleClose}
-            className="close-button"
-          >
+          <button type="button" onClick={handleClose} className="close-button">
             <CloseIcon />
           </button>
         </header>
@@ -67,7 +64,7 @@ export default function EmailCompose() {
             rows="10"
             maxLength="2000"
             placeholder="Your message here"
-            value={email.body} 
+            value={email.body}
             onChange={handleChange}
           />
         </section>

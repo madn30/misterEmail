@@ -1,7 +1,6 @@
 import React, { Suspense } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import EmailIndex from "./pages/EmailIndex/EmailIndex";
-import EmailCompose from "./components/Emails/EmailCompose/EmailCompose";
 import EmailDetails from "./pages/EmailDetails/EmailDetails";
 import MainLayout from "./layouts/MainLayout";
 

@@ -45,11 +45,15 @@ async function query(filterBy) {
 
     switch (folder) {
       case "inbox":
-        return email.from !== userEmail;
+        return email.from !== userEmail && !email.isTrash;
       case "starred":
         return email.isStarred;
       case "sent":
         return email.from === userEmail;
+      case "draft":
+        return email.isDraft;
+      case "trash":
+        return email.isTrash;
       default:
     }
 
@@ -92,10 +96,9 @@ function save(emailToSave) {
 }
 function countUnreadEmailsInFolder(folder) {
   let emails = utilService.loadFromStorage(STORAGE_KEY);
-  const count = emails?.filter(
-    (email) => {
-     return email?.folder?.includes(folder) && !email.isRead
-    }).length;
+  const count = emails?.filter((email) => {
+    return email?.folder?.includes(folder) && !email.isRead;
+  }).length;
   return count;
 }
 
@@ -110,6 +113,7 @@ function getDefaultEmail() {
     from: email,
     isRead: false,
     isStarred: false,
+    isTrash: false,
     sentAt: "",
     removedAt: "",
     sentAt: new Date(),
@@ -148,8 +152,38 @@ function getDefaultFilter({
 
 function _createEmails() {
   let emails = utilService.loadFromStorage(STORAGE_KEY);
+
   if (!emails || !emails.length) {
-    emails = [];
+    emails = [
+      {
+        id: "e101",
+        subject: "Miss you!",
+        body: "Would love to catch up sometimes",
+        isRead: false,
+        isStarred: false,
+        isDraft: false,
+        isTrash: false,
+        sentAt: 1551133930594,
+        removedAt: null,
+        from: "momo@momo.com",
+        to: "user@appsus.com",
+        folder: ["inbox"],
+      },
+      {
+        id: "e102",
+        subject: "Miss you!",
+        body: "Would love to catch up sometimes",
+        isRead: false,
+        isStarred: false,
+        isDraft: false,
+        isTrash: false,
+        sentAt: 1551133930594,
+        removedAt: null,
+        from: "momo@momo.com",
+        to: "user@appsus.com",
+        folder: ["inbox"],
+      },
+    ];
     utilService.saveToStorage(STORAGE_KEY, emails);
   }
 }

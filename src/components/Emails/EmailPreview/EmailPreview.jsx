@@ -51,7 +51,7 @@ const EmailPreview = ({
           className="icon-container"
           onClick={(event) => {
             event.stopPropagation();
-            onRemoveEmail;
+            onRemoveEmail(email.id);
           }}
         >
           <FaTrash />
