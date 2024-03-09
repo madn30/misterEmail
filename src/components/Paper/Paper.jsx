@@ -1,5 +1,9 @@
-import React from "react";
+import React from 'react';
 
-export default function Paper({ children, className = '' }) {
-  return <section className={`paper ${className}`}>{children}</section>;
-}
+const Paper = React.forwardRef((props, ref) => (
+  <section ref={ref} className={`paper ${props.className}`}>
+    {props.children}
+  </section>
+));
+
+export default Paper;
