@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
 import { IoFilterOutline as FilterIcon } from "react-icons/io5";
@@ -6,10 +6,9 @@ import { IoFilterOutline as FilterIcon } from "react-icons/io5";
 import Paper from "../Paper/Paper";
 import useOutsideAlerter from "../../hooks/useOutsideAlerter";
 import IconButton from "../IconButton/IconButton";
-import { emailService } from "../../services/email.service";
 
 export default function AdvancedSearch() {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [, setSearchParams] = useSearchParams();
   const [isAdvancedSearchOpen, setAdvancedSearchOpen] = useState(false);
   const [filterByToEdit, setFilterByToEdit] = useState({
     from: "",
@@ -24,14 +23,6 @@ export default function AdvancedSearch() {
   useOutsideAlerter(wrapperRef, () =>
     setAdvancedSearchOpen(toggleAdvancedSearch())
   );
-
-  // useEffect(() => {
-  //   const params = {};
-  //   searchParams.forEach((value, key) => {
-  //     params[key] = value;
-  //   });
-  //   setFilterByToEdit(params);
-  // }, [searchParams]);
 
   function toggleAdvancedSearch() {
     setAdvancedSearchOpen((prev) => !prev);
@@ -50,7 +41,6 @@ export default function AdvancedSearch() {
       {}
     );
 
-    console.log({ definedParams });
     setSearchParams(definedParams);
 
     navigate({
