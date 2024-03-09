@@ -14,7 +14,6 @@
 }
 .main-layout-grid {
   height: 100vh;
-  margin: 5px;
   column-gap: 24px;
   grid-template-columns: 15.5rem minmax(0, 1fr);
   display: grid;
