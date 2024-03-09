@@ -18,7 +18,6 @@ const STORAGE_KEY = "emails";
 _createEmails();
 
 async function query(filterBy) {
-  console.log({ filterBy });
   const { email: userEmail } = userService.getUser();
   let emails = await storageService.query(STORAGE_KEY);
 
@@ -93,9 +92,10 @@ function save(emailToSave) {
 }
 function countUnreadEmailsInFolder(folder) {
   let emails = utilService.loadFromStorage(STORAGE_KEY);
-  const count = emails.filter(
-    (email) => email?.folder?.includes(folder) && !email.isRead
-  ).length;
+  const count = emails?.filter(
+    (email) => {
+     return email?.folder?.includes(folder) && !email.isRead
+    }).length;
   return count;
 }
 
@@ -117,7 +117,6 @@ function getDefaultEmail() {
   };
 }
 function getFilterFromParams(searchParams) {
-  console.log(searchParams);
   const defaultFilter = getDefaultFilter();
   const filterBy = {};
   for (const field in defaultFilter) {

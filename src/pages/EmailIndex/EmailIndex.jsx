@@ -1,83 +1,134 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useSearchParams } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 
 import { emailService } from "../../services/email.service";
 import Paper from "../../components/Paper/Paper";
 import EmailList from "../../components/Emails/EmailList/EmailList";
 import ProgressBar from "../../components/ProgressBar/ProgressBar";
 import { eventBusService } from "../../services/event-bus.service";
+import EmailCompose from "../../components/Emails/EmailCompose/EmailCompose";
 
 export default function EmailIndex() {
-  const [emails, setEmails] = useState(null);
+  const [emails, setEmails] = useState([]);
+  const [checkedEmails, setCheckedEmails] = useState({});
   const [searchParams] = useSearchParams();
-
   const { folder } = useParams();
-  const initialFilter =
-    searchParams.size > 0
-      ? emailService.getFilterFromParams(searchParams)
-      : { ...emailService.getDefaultFilter(), folder };
+  const [isOpenCompose, setIsOpenCompose] = useState(
+    searchParams.has("compose")
+  );
+  const [filterBy, setFilterBy] = useState({
+    ...emailService.getDefaultFilter(),
+    folder: folder,
+  });
 
-  const [filterBy, setFilterBy] = useState(initialFilter);
-
-  const countEmails = emails
-    ? (emails.filter((mail) => mail.isRead).length / emails.length) * 100
-    : 0;
+  const navigate = useNavigate();
 
   useEffect(() => {
     const loadEmails = async () => {
       try {
-        const emails = await emailService.query(filterBy);
-        setEmails(emails);
+        const emailsFromService = await emailService.query(filterBy);
+        setEmails(emailsFromService);
       } catch (err) {
-        console.error(err);
+        console.error("Failed to load emails:", err);
       }
     };
+
     loadEmails();
   }, [filterBy]);
 
   useEffect(() => {
-    if (folder) {
-      setFilterBy((prevFilter) => ({ ...prevFilter, folder }));
-    }
-  }, [folder, searchParams]);
+    const updateFilters = () => {
+      const newFiltersFromParams =
+        searchParams.size > 0
+          ? emailService.getFilterFromParams(searchParams)
+          : {};
+      setFilterBy((prevFilters) => ({
+        ...prevFilters,
+        ...newFiltersFromParams,
+        folder,
+      }));
+    };
+
+    updateFilters();
+    setIsOpenCompose(searchParams.has("compose"));
+  }, [searchParams, folder]);
 
   useEffect(() => {
-    const unsubscribe = eventBusService.on("compose-form", (payload) => {
-      console.log(payload);
-      onAddEmail(payload);
-    });
+    const handleComposeForm = (payload) => onAddEmail(payload);
+    const unsubscribe = eventBusService.on("compose-form", handleComposeForm);
 
-    return () => {
-      unsubscribe();
-    };
+    return () => unsubscribe();
   }, []);
+
+  const onCheckEmail = (id, isChecked) => {
+    setCheckedEmails((prevCheckedEmails) => ({
+      ...prevCheckedEmails,
+      [id]: isChecked,
+    }));
+  };
 
   const onAddEmail = async (email) => {
     try {
-      const emailUpdated = await emailService.save(email);
+      const updatedEmail = await emailService.save(email);
       if (folder === "sent") {
-        setEmails((prevEmails) => [...prevEmails, emailUpdated]);
+        setEmails((prevEmails) => [...prevEmails, updatedEmail]);
       }
+      eventBusService.emit("show-message", { message: "Message sent." });
     } catch (err) {
-      console.error(err);
+      console.error("Failed to add email:", err);
     }
   };
-  const onRemoveEmail = async (idx) => {
+
+  const onRemoveEmail = async (id) => {
     try {
-      await emailService.remove(idx);
-      setEmails((prevEmails) => prevEmails.filter((mail) => mail.id !== idx));
+      await emailService.remove(id);
+      setEmails((prevEmails) => prevEmails.filter((email) => email.id !== id));
       eventBusService.emit("show-message", {
         message: "Conversation moved to Trash.",
       });
     } catch (err) {
-      console.error(err);
+      console.error("Failed to remove email:", err);
     }
   };
+
+  const toggleComposeEmail = () => setIsOpenCompose((prev) => !prev);
+
+  const countEmailsPercentage = () => {
+    if (!emails.length) return 0;
+    const readEmailsCount = emails.filter((email) => email.isRead).length;
+    return (readEmailsCount / emails.length) * 100;
+  };
+
+  const onEmailClick = async (id) => {
+    const emailToUpdate = emails.find((email) => email.id === id);
+    if (emailToUpdate && !emailToUpdate.isRead) {
+      const updatedEmail = { ...emailToUpdate, isRead: true };
+      try {
+        await emailService.save(updatedEmail);
+        setEmails(
+          emails.map((email) => (email.id === id ? updatedEmail : email))
+        );
+      } catch (error) {
+        console.error("Failed to mark email as read", error);
+      }
+    }
+
+    navigate(`${id}`);
+  };
+
   if (!emails) return <div>Loading...</div>;
+
   return (
     <Paper className="content-container">
-      <EmailList emails={emails} onRemoveEmail={onRemoveEmail} />
-      {!!countEmails && <ProgressBar progress={countEmails} />}
+      <EmailList
+        emails={emails}
+        onRemoveEmail={onRemoveEmail}
+        onCheckEmail={onCheckEmail}
+        checkedEmails={checkedEmails}
+        onEmailClick={onEmailClick}
+      />
+      {!!emails.length && <ProgressBar progress={countEmailsPercentage()} />}
+      {isOpenCompose && <EmailCompose onCloseCompose={toggleComposeEmail} />}
     </Paper>
   );
 }
