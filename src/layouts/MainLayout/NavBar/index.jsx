@@ -9,6 +9,7 @@ import { FaRegStar as StarIcon } from "react-icons/fa";
 import { RiDraftLine as DraftIcon } from "react-icons/ri";
 import { VscSend as SendIcon } from "react-icons/vsc";
 import EmailCompose from "../../../components/Emails/EmailCompose/EmailCompose";
+import ComposeIcon from "../../../components/Icons/ComposeIcon/ComposeIcon";
 
 export default function NavBar() {
   const sections = [
@@ -21,7 +22,7 @@ export default function NavBar() {
 
   return (
     <nav className="nav-bar ">
-      <EmailCompose />
+      <ComposeIcon />
       {sections.map((item, index) => (
         <ToolTip position="right" key={index} content={item.title}>
           <NavItem navItem={item} />
