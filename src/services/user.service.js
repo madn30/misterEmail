@@ -17,7 +17,7 @@ async function query() {
 
 function getUser() {
   let user = utilService.loadFromStorage(STORAGE_KEY);
-  return { email: user.email, fullName: user.fullname };
+  return { email: user?.email, fullName: user?.fullname };
 }
 
 function _createAccount() {
