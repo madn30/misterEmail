@@ -1,15 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
-import { emailService } from "../../../services/email.service";
 
 export default function NavItem({ navItem }) {
   const Icon = navItem.icon;
-  const count = emailService.countUnreadEmailsInFolder(navItem.title);
+  const [unreadMessages] = useState(0);
+
+
   return (
     <NavLink to={`${navItem.to}`} className="nav-item">
       <Icon />
       {navItem.title}
-      <span className="unread-emails">{count > 0 ? count : ""}</span>
+      {unreadMessages > 0 && <span className="unread-emails">{unreadMessages}</span>}
     </NavLink>
   );
 }
