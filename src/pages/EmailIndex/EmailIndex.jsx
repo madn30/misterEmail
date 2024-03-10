@@ -11,7 +11,7 @@ import EmailCompose from "../../components/Emails/EmailCompose/EmailCompose";
 export default function EmailIndex() {
   const [emails, setEmails] = useState([]);
   const [checkedEmails, setCheckedEmails] = useState({});
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const { folder } = useParams();
   const [isOpenCompose, setIsOpenCompose] = useState(
     searchParams.has("compose")
@@ -55,9 +55,14 @@ export default function EmailIndex() {
 
   useEffect(() => {
     const handleComposeForm = (payload) => onAddEmail(payload);
+    const handleDraftForm = (payload) => onDraftEmail(payload);
     const unsubscribe = eventBusService.on("compose-form", handleComposeForm);
+    const unsubscribe2 = eventBusService.on("draft-saved", handleDraftForm);
 
-    return () => unsubscribe();
+    return () => {
+      unsubscribe();
+      unsubscribe2();
+    };
   }, []);
 
   const onCheckEmail = (id, isChecked) => {
@@ -68,12 +73,30 @@ export default function EmailIndex() {
   };
 
   const onAddEmail = async (email) => {
+    console.log({ email });
+
     try {
-      const updatedEmail = await emailService.save(email);
-      if (folder === "sent") {
-        setEmails((prevEmails) => [...prevEmails, updatedEmail]);
-      }
+      // Determine whether the email should be saved as a draft or not
+      const isSavingAsDraft = !email.isDraft; // If the email is not a draft, consider saving it as a draft
+
+      const emailToUpdate = {
+        ...email,
+        isDraft: isSavingAsDraft ? true : false,
+      };
+
+      const updatedEmail = await emailService.save(emailToUpdate);
+
+      setEmails((prevEmails) => {
+        if (email.isDraft) {
+          return prevEmails.filter((e) => e.id !== email.id);
+        } else {
+          return [...prevEmails, updatedEmail];
+        }
+      });
+
       eventBusService.emit("show-message", { message: "Message sent." });
+
+      navigate(-1);
     } catch (err) {
       console.error("Failed to add email:", err);
     }
@@ -82,8 +105,8 @@ export default function EmailIndex() {
   const onRemoveEmail = async (id) => {
     try {
       let message = "Conversation moved to Trash.";
-      let updatedEmails = emails.filter((email) => email.id !== id); 
-  
+      let updatedEmails = emails.filter((email) => email.id !== id); // Common filtering logic
+
       if (folder === "trash") {
         await emailService.remove(id);
         message = "Conversation removed.";
@@ -92,10 +115,14 @@ export default function EmailIndex() {
         if (!emailToUpdate) {
           throw new Error("Email not found");
         }
-        const updatedEmail = { ...emailToUpdate, isTrash: true };
+        const updatedEmail = {
+          ...emailToUpdate,
+          isTrash: true,
+          isDraft: false,
+        };
         await emailService.save(updatedEmail);
       }
-  
+
       setEmails(updatedEmails);
       eventBusService.emit("show-message", { message });
     } catch (err) {
@@ -105,6 +132,28 @@ export default function EmailIndex() {
 
   const toggleComposeEmail = () => setIsOpenCompose((prev) => !prev);
 
+  const onDraftEmail = async (draftEmail) => {
+    if (draftEmail) {
+      try {
+        const emailWithDraftInfo = {
+          ...draftEmail,
+          folder: ["drafts"],
+          isRead: true,
+        };
+
+        await emailService.save(emailWithDraftInfo);
+
+        if (folder === "drafts") {
+          setEmails((prevEmails) => [...prevEmails, emailWithDraftInfo]);
+        }
+
+        eventBusService.emit("show-message", { message: "Draft saved." });
+      } catch (error) {
+        console.error("Failed to save draft:", error);
+      }
+    }
+  };
+
   const countEmailsPercentage = () => {
     if (!emails.length) return 0;
     const readEmailsCount = emails.filter((email) => email.isRead).length;
@@ -113,19 +162,24 @@ export default function EmailIndex() {
 
   const onEmailClick = async (id) => {
     const emailToUpdate = emails.find((email) => email.id === id);
-    if (emailToUpdate && !emailToUpdate.isRead) {
-      const updatedEmail = { ...emailToUpdate, isRead: true };
-      try {
-        await emailService.save(updatedEmail);
-        setEmails(
-          emails.map((email) => (email.id === id ? updatedEmail : email))
-        );
-      } catch (error) {
-        console.error("Failed to mark email as read", error);
+    console.log(emailToUpdate);
+    if (emailToUpdate.isDraft) {
+      navigate(`?compose=${emailToUpdate.composeId}`);
+    } else {
+      if (emailToUpdate && !emailToUpdate.isRead) {
+        const updatedEmail = { ...emailToUpdate, isRead: true };
+        try {
+          await emailService.save(updatedEmail);
+          setEmails(
+            emails.map((email) => (email.id === id ? updatedEmail : email))
+          );
+        } catch (error) {
+          console.error("Failed to mark email as read", error);
+        }
       }
-    }
 
-    navigate(`${id}`);
+      navigate(`${id}`);
+    }
   };
 
   if (!emails) return <div>Loading...</div>;

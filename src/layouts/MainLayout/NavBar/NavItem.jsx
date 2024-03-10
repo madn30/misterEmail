@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
-import { eventBusService } from "../../../services/event-bus.service"; // Ensure this is imported if used
+import { eventBusService } from "../../../services/event-bus.service";
 import { emailService } from "../../../services/email.service";
 
 export default function NavItem({ navItem }) {

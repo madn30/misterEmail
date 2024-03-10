@@ -5,7 +5,6 @@ import { Snackbar } from "./components/SnackBar/SnackBar";
 import { createRouting, routes } from "./routes";
 
 function App() {
-
   useEffect(() => {
     const loadUser = async () => {
       try {

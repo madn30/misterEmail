@@ -1,11 +1,11 @@
 .nav-item {
   padding-left: 20px;
-  height: 40px;
+  height: 35px;
   display: flex;
   gap: 20px;
   align-items: center;
   text-align: center;
-  border-radius: 0px 10px 10px 0px;
+  border-radius: 0px 20px 20px 0px;
 }
 .nav-item:hover {
   background-color: rgba(32, 33, 36, 0.059);
@@ -14,8 +14,7 @@
   background-color: #d3e3fd !important;
   color: black !important;
 }
-.nav-bar-compose-root {
-  
+.email-compose-form {
   padding-left: 6px;
   margin-bottom: 10px;
   display: flex;

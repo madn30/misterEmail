@@ -6,7 +6,7 @@
   --input-shadow-color: rgba(100, 121, 143, 0.122);
 }
 
-.nav-bar-compose-root{
+.email-compose-container{
   display: flex;
 }
 
@@ -18,7 +18,7 @@
 .compose-button {
   cursor: pointer;
   width: fit-content;
-  margin: 0px 5px 10px 5px;
+  margin: 8px 5px 15px 8px;
   background-color: var(--primary-bg-color);
   padding: 15px 20px;
   border-radius: 15px;

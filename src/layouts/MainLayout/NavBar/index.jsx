@@ -14,7 +14,7 @@ export default function NavBar() {
     { title: "Inbox", icon: InboxIcon, to: "inbox" },
     { title: "Starred", icon: StarIcon, to: "starred" },
     { title: "Sent", icon: SendIcon, to: "sent" },
-    { title: "Draft", icon: DraftIcon, to: "draft" },
+    { title: "Draft", icon: DraftIcon, to: "drafts" },
     { title: "Trash", icon: DraftIcon, to: "trash" },
   ];
 

@@ -1,11 +1,26 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { emailService } from "../../../services/email.service";
 import { MdClose as CloseIcon } from "react-icons/md";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { eventBusService } from "../../../services/event-bus.service";
+import { utilService } from "../../../services/util.service";
 
 export default function EmailCompose() {
   const [email, setEmail] = useState({ to: "", subject: "", body: "" });
+  const [searchParams] = useSearchParams();
+  useEffect(() => {
+    if (searchParams.get("compose") !== "new") {
+      const loadDraft = async () => {
+        const draftId = searchParams.get("compose");
+        if (draftId) {
+          const draft = await emailService.getDraftEmail(draftId);
+          if (draft) setEmail(draft);
+        }
+      };
+
+      loadDraft();
+    }
+  }, [searchParams]);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -15,15 +30,11 @@ export default function EmailCompose() {
       [name]: value,
     }));
   };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const defaultEmail = emailService.getDefaultEmail();
-
     const payload = {
-      ...defaultEmail,
+      ...emailService.getDefaultEmail(),
       ...email,
-      folder: ["sent"],
       isRead: true,
     };
     try {
@@ -32,9 +43,22 @@ export default function EmailCompose() {
       console.error(err);
     }
   };
+  const saveDraft = () => {
+    if (email.to || email.subject || email.body) {
+      const draftEmail = {
+        ...emailService.getDefaultEmail(),
+        ...email,
+        folder: ["drafts"],
+        isRead: true,
+        isDraft: true,
+        composeId: utilService.makeId(),
+      };
+      eventBusService.emit("draft-saved", draftEmail);
+    }
+  };
 
   const handleClose = () => {
-    navigate(-1);
+    saveDraft();
   };
 
   return (

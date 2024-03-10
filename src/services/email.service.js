@@ -11,6 +11,8 @@ export const emailService = {
   getDefaultFilter,
   countUnreadEmailsInFolder,
   getFilterFromParams,
+  getDraftEmail,
+  hasExistingDraft,
 };
 
 const STORAGE_KEY = "emails";
@@ -45,12 +47,12 @@ async function query(filterBy) {
 
     switch (folder) {
       case "inbox":
-        return email.from !== userEmail && !email.isTrash;
+        return email.from !== userEmail && !email.isTrash && !email.isDraft;
       case "starred":
         return email.isStarred;
       case "sent":
         return email.from === userEmail;
-      case "draft":
+      case "drafts":
         return email.isDraft;
       case "trash":
         return email.isTrash;
@@ -101,7 +103,14 @@ function countUnreadEmailsInFolder(folder) {
   }).length;
   return count;
 }
-
+function getDraftEmail(composeId) {
+  const emails = utilService.loadFromStorage(STORAGE_KEY) || [];
+  return emails.find((email) => email.composeId === composeId);
+}
+function hasExistingDraft  (composeId) {
+  const emails = utilService.loadFromStorage(STORAGE_KEY) || [];
+  return emails.some((email) => email.composeId === composeId && email.isDraft);
+};
 function getDefaultEmail() {
   const { email } = userService.getUser();
 
@@ -114,6 +123,8 @@ function getDefaultEmail() {
     isRead: false,
     isStarred: false,
     isTrash: false,
+    isDraft: false,
+    composeId: "",
     sentAt: "",
     removedAt: "",
     sentAt: new Date(),
