@@ -54,7 +54,7 @@ export default function EmailCompose() {
         composeId: utilService.makeId(),
       };
       eventBusService.emit("draft-saved", draftEmail);
-    }
+    } else navigate(-1);
   };
 
   const handleClose = () => {
