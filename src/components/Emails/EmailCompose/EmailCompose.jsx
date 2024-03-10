@@ -1,35 +1,31 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { emailService } from "../../../services/email.service";
-import { MdClose as CloseIcon } from "react-icons/md";
-import { useNavigate, useParams, useSearchParams } from "react-router-dom";
-import { eventBusService } from "../../../services/event-bus.service";
 import { utilService } from "../../../services/util.service";
+import { eventBusService } from "../../../services/event-bus.service";
+import { ComposeControlButtons } from "./ComposeControlButtons";
 
 export default function EmailCompose() {
   const [email, setEmail] = useState({ to: "", subject: "", body: "" });
+  const [viewCompose, setViewCompose] = useState("normal");
   const [searchParams] = useSearchParams();
-  useEffect(() => {
-    if (searchParams.get("compose") !== "new") {
-      const loadDraft = async () => {
-        const draftId = searchParams.get("compose");
-        if (draftId) {
-          const draft = await emailService.getDraftEmail(draftId);
-          if (draft) setEmail(draft);
-        }
-      };
+  const navigate = useNavigate();
 
+  useEffect(() => {
+    const composeParam = searchParams.get("compose");
+    if (composeParam && composeParam !== "new") {
+      const loadDraft = async () => {
+        const draft = await emailService.getDraftEmail(composeParam);
+        if (draft) setEmail(draft);
+      };
       loadDraft();
     }
   }, [searchParams]);
-  const navigate = useNavigate();
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setEmail((prevEmail) => ({
-      ...prevEmail,
-      [name]: value,
-    }));
+  const handleChange = ({ target: { name, value } }) => {
+    setEmail((prev) => ({ ...prev, [name]: value }));
   };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const payload = {
@@ -37,12 +33,9 @@ export default function EmailCompose() {
       ...email,
       isRead: true,
     };
-    try {
-      eventBusService.emit("compose-form", payload);
-    } catch (err) {
-      console.error(err);
-    }
+    eventBusService.emit("compose-form", payload);
   };
+
   const saveDraft = () => {
     if (email.to || email.subject || email.body) {
       const draftEmail = {
@@ -57,18 +50,24 @@ export default function EmailCompose() {
     } else navigate(-1);
   };
 
-  const handleClose = () => {
-    saveDraft();
-  };
+  const toggleMinimize = () => setViewCompose(prev => prev === "minimize" ? "normal" : "minimize");
+
+  const toggleFullscreen = () => setViewCompose(prev => prev === "full" ? "normal" : "full");
 
   return (
     <div className="nav-bar-compose-root">
-      <form className="send-mail-modal" onSubmit={handleSubmit}>
+      <form
+        className={`send-mail-modal ${viewCompose}`}
+        onSubmit={handleSubmit}
+      >
         <header>
           New message
-          <button type="button" onClick={handleClose} className="close-button">
-            <CloseIcon />
-          </button>
+          <ComposeControlButtons
+            viewCompose={viewCompose}
+            toggleMinimize={toggleMinimize}
+            toggleFullscreen={toggleFullscreen}
+            saveDraft={saveDraft}
+          />
         </header>
         <section>
           <input

@@ -76,8 +76,7 @@ export default function EmailIndex() {
     console.log({ email });
 
     try {
-      // Determine whether the email should be saved as a draft or not
-      const isSavingAsDraft = !email.isDraft; // If the email is not a draft, consider saving it as a draft
+      const isSavingAsDraft = !email.isDraft; 
 
       const emailToUpdate = {
         ...email,
@@ -105,7 +104,7 @@ export default function EmailIndex() {
   const onRemoveEmail = async (id) => {
     try {
       let message = "Conversation moved to Trash.";
-      let updatedEmails = emails.filter((email) => email.id !== id); // Common filtering logic
+      let updatedEmails = emails.filter((email) => email.id !== id);
 
       if (folder === "trash") {
         await emailService.remove(id);
@@ -154,7 +153,7 @@ export default function EmailIndex() {
     }
   };
 
-  const countEmailsPercentage = () => {
+  const countUnreadEmailsPercentage = () => {
     if (!emails.length) return 0;
     const readEmailsCount = emails.filter((email) => email.isRead).length;
     return (readEmailsCount / emails.length) * 100;
@@ -193,7 +192,7 @@ export default function EmailIndex() {
         checkedEmails={checkedEmails}
         onEmailClick={onEmailClick}
       />
-      {!!emails.length && <ProgressBar progress={countEmailsPercentage()} />}
+      {!!emails.length && <ProgressBar progress={countUnreadEmailsPercentage()} />}
       {isOpenCompose && <EmailCompose onCloseCompose={toggleComposeEmail} />}
     </Paper>
   );
