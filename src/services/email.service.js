@@ -51,7 +51,7 @@ async function query(filterBy) {
       case "starred":
         return email.isStarred;
       case "sent":
-        return email.from === userEmail;
+        return email.from === userEmail && !email.isTrash && !email.isDraft;
       case "drafts":
         return email.isDraft;
       case "trash":

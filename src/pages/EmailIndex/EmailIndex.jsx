@@ -73,7 +73,6 @@ export default function EmailIndex() {
   };
 
   const onAddEmail = async (email) => {
-    console.log({ email });
 
     try {
       const isSavingAsDraft = !email.isDraft; 
@@ -161,7 +160,6 @@ export default function EmailIndex() {
 
   const onEmailClick = async (id) => {
     const emailToUpdate = emails.find((email) => email.id === id);
-    console.log(emailToUpdate);
     if (emailToUpdate.isDraft) {
       navigate(`?compose=${emailToUpdate.composeId}`);
     } else {
