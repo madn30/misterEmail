@@ -29,6 +29,7 @@ export default function NavBar() {
     } else navigate(`${location.pathname}?compose=new`);
   };
 
+
   return (
     <nav className="nav-bar ">
       <ComposeIcon onClick={onClickCompose} />

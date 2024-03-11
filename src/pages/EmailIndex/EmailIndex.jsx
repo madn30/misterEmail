@@ -7,6 +7,7 @@ import EmailList from "../../components/Emails/EmailList/EmailList";
 import ProgressBar from "../../components/ProgressBar/ProgressBar";
 import { eventBusService } from "../../services/event-bus.service";
 import EmailCompose from "../../components/Emails/EmailCompose/EmailCompose";
+import { useRemoveQueryParams } from "../../hooks/useRemoveQueryParams";
 
 export default function EmailIndex() {
   const [emails, setEmails] = useState([]);
@@ -18,10 +19,10 @@ export default function EmailIndex() {
   );
   const [filterBy, setFilterBy] = useState({
     ...emailService.getDefaultFilter(),
-    folder: folder,
+    folder,
   });
-
   const navigate = useNavigate();
+  const removeQueryParams = useRemoveQueryParams()
 
   useEffect(() => {
     const loadEmails = async () => {
@@ -63,7 +64,7 @@ export default function EmailIndex() {
       unsubscribe();
       unsubscribe2();
     };
-  }, []);
+  }, [folder]);
 
   const onCheckEmail = (id, isChecked) => {
     setCheckedEmails((prevCheckedEmails) => ({
@@ -73,28 +74,22 @@ export default function EmailIndex() {
   };
 
   const onAddEmail = async (email) => {
-
     try {
-      const isSavingAsDraft = !email.isDraft; 
-
-      const emailToUpdate = {
-        ...email,
-        isDraft: isSavingAsDraft ? true : false,
-      };
-
-      const updatedEmail = await emailService.save(emailToUpdate);
-
-      setEmails((prevEmails) => {
-        if (email.isDraft) {
-          return prevEmails.filter((e) => e.id !== email.id);
-        } else {
-          return [...prevEmails, updatedEmail];
-        }
-      });
-
+      const updatedEmail = await emailService.save(email);
+  
+      if (folder === "drafts" || folder === "sent") {
+        setEmails(prevEmails => {
+          if (folder === "drafts") {
+            return prevEmails.filter(e => e.id !== email.id);
+          }
+          else if (folder === "sent") {
+            return [...prevEmails, updatedEmail];
+          }
+          return prevEmails;
+        });
+      }
+      removeQueryParams("compose")
       eventBusService.emit("show-message", { message: "Message sent." });
-
-      navigate(-1);
     } catch (err) {
       console.error("Failed to add email:", err);
     }
@@ -135,16 +130,17 @@ export default function EmailIndex() {
       try {
         const emailWithDraftInfo = {
           ...draftEmail,
-          folder: ["drafts"],
           isRead: true,
+          isDraft: true,
         };
 
-        await emailService.save(emailWithDraftInfo);
+        const savedDraft = await emailService.save(emailWithDraftInfo);
 
         if (folder === "drafts") {
-          setEmails((prevEmails) => [...prevEmails, emailWithDraftInfo]);
+          setEmails((prevEmails) => [...prevEmails, savedDraft]);
         }
-
+        
+        removeQueryParams("compose")
         eventBusService.emit("show-message", { message: "Draft saved." });
       } catch (error) {
         console.error("Failed to save draft:", error);
@@ -161,7 +157,7 @@ export default function EmailIndex() {
   const onEmailClick = async (id) => {
     const emailToUpdate = emails.find((email) => email.id === id);
     if (emailToUpdate.isDraft) {
-      navigate(`?compose=${emailToUpdate.composeId}`);
+      navigate(`?compose=${emailToUpdate.id}`);
     } else {
       if (emailToUpdate && !emailToUpdate.isRead) {
         const updatedEmail = { ...emailToUpdate, isRead: true };
@@ -190,7 +186,9 @@ export default function EmailIndex() {
         checkedEmails={checkedEmails}
         onEmailClick={onEmailClick}
       />
-      {!!emails.length && <ProgressBar progress={countUnreadEmailsPercentage()} />}
+      {!!emails.length && (
+        <ProgressBar progress={countUnreadEmailsPercentage()} />
+      )}
       {isOpenCompose && <EmailCompose onCloseCompose={toggleComposeEmail} />}
     </Paper>
   );

@@ -35,7 +35,7 @@ export default function MainHeader() {
             const IconComponent = iconComponents[icon];
             return (
               IconComponent && (
-                <ToolTip key={index} content={title}>
+                <ToolTip key={index} content={title} position="bottom">
                   <IconButton title={title}>
                     <IconComponent />
                   </IconButton>

@@ -12,14 +12,14 @@ export default function NavItem({ navItem }) {
     setUnreadMessages(count);
   };
 
-  useEffect(() => {
-    updateUnreadMessages(); 
+  // useEffect(() => {
+  //   updateUnreadMessages(); 
 
-    const handleComposeForm = () => updateUnreadMessages();
-    const unsubscribe = eventBusService.on("compose-form", handleComposeForm);
+  //   const handleComposeForm = () => updateUnreadMessages();
+  //   const unsubscribe = eventBusService.on("compose-form", handleComposeForm);
 
-    return () => unsubscribe();
-  }, [navItem.to]);
+  //   return () => unsubscribe();
+  // }, [navItem.to]);
 
   return (
     <NavLink to={`${navItem.to}`} className="nav-item">

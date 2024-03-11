@@ -32,6 +32,8 @@ export default function EmailCompose() {
       ...emailService.getDefaultEmail(),
       ...email,
       isRead: true,
+      isDraft: false,
+
     };
     eventBusService.emit("compose-form", payload);
   };
@@ -41,13 +43,11 @@ export default function EmailCompose() {
       const draftEmail = {
         ...emailService.getDefaultEmail(),
         ...email,
-        folder: ["drafts"],
         isRead: true,
         isDraft: true,
-        composeId: utilService.makeId(),
       };
       eventBusService.emit("draft-saved", draftEmail);
-    } else navigate(-1);
+    } 
   };
 
   const toggleMinimize = () => setViewCompose(prev => prev === "minimize" ? "normal" : "minimize");

@@ -26,7 +26,7 @@ async function query(filterBy) {
   if (!filterBy) return emails;
 
   const {
-    search = "",
+    query = "",
     folder,
     to,
     from,
@@ -36,11 +36,11 @@ async function query(filterBy) {
   } = { ...filterBy };
   return emails.filter((email) => {
     if (
-      search &&
+      query &&
       !(
-        email.subject.toLowerCase().includes(search.toLowerCase()) ||
-        email.body.toLowerCase().includes(search.toLowerCase()) ||
-        email.to.toLowerCase().includes(search.toLowerCase())
+        email.subject.toLowerCase().includes(query.toLowerCase()) ||
+        email.body.toLowerCase().includes(query.toLowerCase()) ||
+        email.to.toLowerCase().includes(query.toLowerCase())
       )
     )
       return false;
@@ -58,11 +58,19 @@ async function query(filterBy) {
         return email.isTrash;
       default:
     }
-
     if (to && email.to !== to) return false;
     if (from && email.from !== from) return false;
     if (subject && email.subject !== subject) return false;
 
+    if (
+      query &&
+      !(
+        email.subject.toLowerCase().includes(query.toLowerCase()) ||
+        email.body.toLowerCase().includes(query.toLowerCase()) ||
+        email.to.toLowerCase().includes(query.toLowerCase())
+      )
+    )
+      return false;
     if (
       has &&
       !email.subject.toLowerCase().includes(has.toLowerCase()) &&
@@ -103,14 +111,14 @@ function countUnreadEmailsInFolder(folder) {
   }).length;
   return count;
 }
-function getDraftEmail(composeId) {
+function getDraftEmail(id) {
   const emails = utilService.loadFromStorage(STORAGE_KEY) || [];
-  return emails.find((email) => email.composeId === composeId);
+  return emails.find((email) => email.id === id);
 }
-function hasExistingDraft  (composeId) {
+function hasExistingDraft(id) {
   const emails = utilService.loadFromStorage(STORAGE_KEY) || [];
-  return emails.some((email) => email.composeId === composeId && email.isDraft);
-};
+  return emails.some((email) => email.id === id && email.isDraft);
+}
 function getDefaultEmail() {
   const { email } = userService.getUser();
 
@@ -124,11 +132,9 @@ function getDefaultEmail() {
     isStarred: false,
     isTrash: false,
     isDraft: false,
-    composeId: "",
     sentAt: "",
     removedAt: "",
     sentAt: new Date(),
-    folder: [],
   };
 }
 function getFilterFromParams(searchParams) {
@@ -142,8 +148,8 @@ function getFilterFromParams(searchParams) {
 }
 
 function getDefaultFilter({
-  search = "",
-  folder = "",
+  query = "",
+  folder = null,
   to = "",
   from = "",
   subject = "",
@@ -151,7 +157,7 @@ function getDefaultFilter({
   hasnot = "",
 } = {}) {
   return {
-    search,
+    query,
     folder,
     to,
     from,
@@ -178,7 +184,6 @@ function _createEmails() {
         removedAt: null,
         from: "momo@momo.com",
         to: "user@appsus.com",
-        folder: ["inbox"],
       },
       {
         id: "e102",
@@ -192,7 +197,6 @@ function _createEmails() {
         removedAt: null,
         from: "momo@momo.com",
         to: "user@appsus.com",
-        folder: ["inbox"],
       },
     ];
     utilService.saveToStorage(STORAGE_KEY, emails);
